@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from "fs";
 
-const data = readFileSync("./yelp_academic_dataset_business.json")
+const data = readFileSync("../data/yelp_academic_dataset_business.json")
 	.toString()
 	.split("\n");
 
@@ -20,4 +20,4 @@ for (const line of data) {
 	if (i >= 10000) break;
 }
 
-writeFileSync("./data/dataset.json", JSON.stringify(set));
+writeFileSync("../data/dataset.json", JSON.stringify(set));

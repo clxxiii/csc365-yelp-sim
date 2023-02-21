@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync } from "fs";
 
-const data = readFileSync("./yelp_academic_dataset_review.json")
+const data = readFileSync("../data/yelp_academic_dataset_review.json")
 	.toString()
 	.split("\n");
 
