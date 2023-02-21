@@ -13,10 +13,9 @@ Put the `yelp_academic_dataset_business.json` and `yelp_academic_dataset_review.
 ```bash
 npm install
 npx ts-node datanarrower/narrow.ts
-npx ts-node datanarrower/reviews.ts
 ```
 
-This should generate two files, `dataset.json`, and `dataset_reviews.json`.
+This should generate a file named `dataset.json`.
 At this point if you would like to throw away the original files, you may.
 
 3. something with springboot we haven't gotten there yet
