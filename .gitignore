@@ -2,3 +2,4 @@ bin
 **.class
 data
 node_modules
+target

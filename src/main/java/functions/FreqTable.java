@@ -1,3 +1,5 @@
+package main.java.functions;
+
 import java.io.*;
 import java.util.*;
 
@@ -30,7 +32,8 @@ public class FreqTable implements java.io.Serializable {
     int h = key.hashCode();
     int i = h & (table.length - 1);
     for (Node e = table[i]; e != null; e = e.next) {
-      if (key.equals(e.key)) return true;
+      if (key.equals(e.key))
+        return true;
     }
     return false;
   }
@@ -46,7 +49,8 @@ public class FreqTable implements java.io.Serializable {
     }
     table[i] = new Node(key, table[i]);
     ++size;
-    if ((float) size / table.length >= 0.75f) resize();
+    if ((float) size / table.length >= 0.75f)
+      resize();
   }
 
   int getCount(Object key) {
@@ -83,7 +87,10 @@ public class FreqTable implements java.io.Serializable {
     Node e = table[i], p = null;
     while (e != null) {
       if (key.equals(e.key)) {
-        if (p == null) table[i] = e.next; else p.next = e.next;
+        if (p == null)
+          table[i] = e.next;
+        else
+          p.next = e.next;
         break;
       }
       p = e;
@@ -92,11 +99,9 @@ public class FreqTable implements java.io.Serializable {
   }
 
   void printAll() {
-    for (int i = 0; i < table.length; ++i) for (
-      Node e = table[i];
-      e != null;
-      e = e.next
-    ) System.out.println(e.key);
+    for (int i = 0; i < table.length; ++i)
+      for (Node e = table[i]; e != null; e = e.next)
+        System.out.println(e.key);
   }
 
   private void writeObject(ObjectOutputStream s) throws Exception {
@@ -112,6 +117,7 @@ public class FreqTable implements java.io.Serializable {
   private void readObject(ObjectInputStream s) throws Exception {
     s.defaultReadObject();
     int n = s.readInt();
-    for (int i = 0; i < n; ++i) add(s.readObject());
+    for (int i = 0; i < n; ++i)
+      add(s.readObject());
   }
 }

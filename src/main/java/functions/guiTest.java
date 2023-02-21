@@ -1,15 +1,15 @@
+package main.java.functions;
+
 import java.awt.Dimension;
 import java.awt.Point;
 import javax.swing.*;
 
 public class guiTest {
 
-
   public static void main(String[] args) {
     String[] listOfMovies = { "Batman", "Batman 2", "Batman 3" };
 
-    
-    //TEST
+    // TEST
     JFrame frame = new JFrame("HelloWorldSwing");
     frame.setPreferredSize(new Dimension(500, 500));
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -23,7 +23,7 @@ public class guiTest {
     frame.getContentPane().add(label);
     frame.getContentPane().add(movieList);
 
-    //Display the window.
+    // Display the window.
 
     frame.pack();
     frame.setVisible(true);
