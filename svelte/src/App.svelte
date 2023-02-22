@@ -50,7 +50,6 @@
     margin: auto;
     min-height: calc(100vh - 30px);
     background-color: #0006;
-    backdrop-filter: blur(4px);
   }
   .recommendations {
     display: flex;
