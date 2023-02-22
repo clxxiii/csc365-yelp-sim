@@ -9,14 +9,16 @@ public class HelloApplication {
 
   @GetMapping("/get_names")
   public String[] listBusinessNames() {
-    String[] list = { "Hello World!" };
+    // This is just a placeholder to test the frontend
+    String[] list = {"go",     "javascript", "python",   "rust", "swift",
+                     "kotlin", "elixir",     "java",     "lisp", "v",
+                     "zig",    "nim",        "rescript", "d",    "haskell"};
     return list;
   }
 
   @GetMapping("/recommend")
-  public String recommendBusinees(
-    @RequestParam(value = "id", defaultValue = "0") String id
-  ) {
+  public String recommendBusinees(@RequestParam(value = "id",
+                                                defaultValue = "0") String id) {
     return "Fetching two businesses related to Business ID " + id;
   }
 }
