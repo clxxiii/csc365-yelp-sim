@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap");
+
+@font-face {
+  font-family: "Product Sans";
+  src: url("./lib/Product Sans Regular.ttf");
+}
+
+body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100vw;
+  min-height: 100vh;
+  margin: 0;
+  background-color: #ddd;
+  font-family: "Product Sans";
+}
