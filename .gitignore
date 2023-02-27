@@ -3,3 +3,4 @@ bin
 data
 node_modules
 target
+.DS_Store
