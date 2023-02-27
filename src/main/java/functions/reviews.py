@@ -78,18 +78,39 @@ b = open("data/smallerListOfRestaurants.txt", "r")
 
 test = "{\"business_id\":\"BWPokhrYnWdfxdaUaM6l9Q\",\"name\":\"Nashville Symphony\",\"address\":\"1 Symphony Pl\",\"city\":\"Nashville\",\"state\":\"TN\",\"postal_code\":\"37201\",\"latitude\":36.1599355658,\"longitude\":-86.7759658783,\"stars\":4.5,\"review_count\":107,\"is_open\":1,\"attributes\":{\"Alcohol\":\"u'full_bar'\",\"RestaurantsGoodForGroups\":\"True\",\"NoiseLevel\":\"'loud'\",\"RestaurantsReservations\":\"True\",\"BusinessAcceptsCreditCards\":\"True\",\"WiFi\":\"'no'\",\"HasTV\":\"False\",\"RestaurantsPriceRange2\":\"3\",\"GoodForKids\":\"True\",\"RestaurantsDelivery\":\"False\",\"Caters\":\"False\",\"RestaurantsAttire\":\"u'dressy'\",\"OutdoorSeating\":\"True\",\"DogsAllowed\":\"False\",\"GoodForDancing\":\"False\",\"BusinessAcceptsBitcoin\":\"False\",\"BikeParking\":\"True\",\"CoatCheck\":\"True\",\"BestNights\":\"{'monday': False, 'tuesday': False, 'friday': True, 'wednesday': False, 'thursday': True, 'sunday': False, 'saturday': True}\",\"Smoking\":\"u'no'\",\"Music\":\"{'dj': False, 'background_music': False, 'no_music': False, 'jukebox': False, 'live': True, 'video': False, 'karaoke': False}\",\"RestaurantsTakeOut\":\"False\",\"WheelchairAccessible\":\"True\",\"BusinessParking\":\"{'garage': True, 'street': True, 'validated': False, 'lot': False, 'valet': True}\",\"Ambience\":\"{'touristy': False, 'hipster': False, 'romantic': False, 'divey': False, 'intimate': False, 'trendy': False, 'upscale': True, 'classy': True, 'casual': False}\"},\"categories\":\"Venues & Event Spaces, Musicians, Restaurants, Arts & Entertainment, Local Services, Nightlife, Performing Arts, Event Planning & Services, Party & Event Planning, Community Service\/Non-Profit, Music Venues\",\"hours\":{\"Monday\":\"10:0-18:0\",\"Tuesday\":\"10:0-18:0\",\"Wednesday\":\"10:0-18:0\",\"Thursday\":\"10:0-18:0\",\"Friday\":\"10:0-18:0\",\"Saturday\":\"10:0-14:0\"}}"
 
+outputFile = open("arrayOfRestaurants.txt", "w")
 
+outputString = "{ \"restaurantArr\": [\n"
 
-lowestDist = 10000000000
-lowestID = ""
 for i in b:
-    dist = getDistance(getCoordinates(test), getCoordinates(i))
-    if(getBusinessID(i) != getBusinessID(test) and dist < lowestDist):
-        lowestID = getBusinessID(i)
-        lowestDist = dist
+    outputString += i + ","
+
+outputString += "] }"
+
+
+
+
+
+outputFile.write(outputString)
+outputFile.close()
+
+
+
+
+
+
+#Function to calculate closest business to test
+
+# lowestDist = 10000000000
+# lowestID = ""
+# for i in b:
+#     dist = getDistance(getCoordinates(test), getCoordinates(i))
+#     if(getBusinessID(i) != getBusinessID(test) and dist < lowestDist):
+#         lowestID = getBusinessID(i)
+#         lowestDist = dist
 
     
-print(lowestID)
+# print(lowestID)
 
 
 
