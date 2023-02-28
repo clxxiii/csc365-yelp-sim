@@ -44,6 +44,7 @@ public class HelloApplication {
   @GetMapping("/recommend")
   public String recommendBusinees(@RequestParam(value = "id",
                                                 defaultValue = "0") String id) {
+                                                  
     return "Fetching two businesses related to Business ID " + id;
   }
 }

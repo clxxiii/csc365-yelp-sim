@@ -14,7 +14,11 @@ import java.nio.Buffer;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.ArrayList;
-
+import java.util.Arrays;
+import java.util.Collections;
+import java.awt.Dimension;
+import java.awt.Point;
+import javax.swing.*;
 
 public class locality {
 
@@ -160,22 +164,23 @@ public class locality {
 
     }
     public static float[] getDistArr(String input) throws Exception{
+
         String path = "data/smallerListOfRestaurants.txt";
         BufferedReader reader = new BufferedReader(new FileReader(path));
         String Line = reader.readLine();
         int count = 0;
         float[] distArray = new float[10000];
         while(Line != null){
-            distArray[count] = getDistance(getCoordinates(inLine), getCoordinates(Line));
+            distArray[count] = 1 / getDistance(getCoordinates(input), getCoordinates(Line));
             count++;
             Line = reader.readLine();
         }
 
-        return distArray;
-        
         reader.close();
-    }
+        return distArray;
 
+        
+    }
     public static float IFIDF(String[] commonElements, HashMap<String, Integer> freqTable){
         float output = 0;
 
@@ -191,47 +196,28 @@ public class locality {
 
         return output;
     }
-    public static void main(String[] args) throws Exception{
+    public static float[] getIFIDFArr(String input, HashMap<String, Integer> freqTable) throws Exception{
 
-        
-        String test = "Sonic Drive-In";
-        String inLine = getLineFromName(test);
         String path = "data/smallerListOfRestaurants.txt";
         BufferedReader reader = new BufferedReader(new FileReader(path));
         String Line = reader.readLine();
-        
-
-
-        
-
-
-
-        for(int i = 0; i < getCategories(Line).length;i++){
-            System.out.println(getCategories(Line)[i]);
-        }
-        System.out.println("---------------");
-        for(int i = 0; i < getCategories(inLine).length;i++){
-            System.out.println(getCategories(inLine)[i]);
-        }
-
-        System.out.println("---------------");
-        String[] commonElements = commonElements(getCategories(Line), getCategories(inLine));
-    
-        for(int i = 0; i < commonElements.length; i++){
-            System.out.println(commonElements[i]);
-        }
-
-        
-
-        //Fill Distance Array - Array representing distance from chosen restaurant
         int count = 0;
+        float[] IFIDFArr = new float[10000];
 
-        
+        while(Line != null){
+            IFIDFArr[count] = IFIDF(commonElements(getCategories(input), getCategories(Line)), freqTable);
+            count++;
+            Line = reader.readLine();
+        }
 
-        BufferedReader reader2 = new BufferedReader(new FileReader(path));
+        reader.close();
+        return IFIDFArr;
+    }
+    public static HashMap<String, Integer> getFreqTable() throws Exception{
+        String path = "data/smallerListOfRestaurants.txt";
+        BufferedReader reader = new BufferedReader(new FileReader(path));
+        String Line = reader.readLine();
 
-        Line = reader2.readLine();
-        //Create Frequency Table
         HashMap<String, Integer> freqTable = new HashMap<String, Integer>();
         
         while(Line != null){
@@ -245,23 +231,86 @@ public class locality {
                     freqTable.put(ithCategory, 1);
                 }
             }
-            Line = reader2.readLine();
+            Line = reader.readLine();
+        }
+        reader.close();
+        return freqTable;
+    }
+    public static float[] normalizeArr(float[] arr){
+        float min = 1000000;
+        float max = 0;
+        float minIndex, maxIndex;
+        float[] output = new float[10000];
+        for(int i = 0; i < arr.length; i++){
+            if(arr[i] < min){
+                min = arr[i];
+                minIndex = i;
+            }
+            if(arr[i] > max){
+                max = arr[i];
+                maxIndex = i;
+            }
         }
 
-        System.out.println(IFIDF(commonElements, freqTable));
+        for(int i = 0; i < arr.length; i++){
+            output[i] = (arr[i] - min) / (max - min);
+        }
+        return output;
+    }
+    public static float[] getSimiliarityArr(String inLine) throws Exception{
+        float[] output = new float[10000];
+        HashMap<String, Integer> freqTable = getFreqTable();
+        float[] IFIDFArr = getIFIDFArr(inLine, freqTable);
+        float[] distArr = getDistArr(inLine);
+
+        //Normalize Arrays
+
+        float[] normIFIDFArr = normalizeArr(IFIDFArr);
+        float[] normDistArr = normalizeArr(distArr);
 
 
+        if(distArr.length != 10000 || IFIDFArr.length != 10000){
+            return new float[10];
+        }
 
+        for(int i = 0; i < output.length; i++){
+            float similarity = 0;
+            similarity -= distArr[i];
+            similarity += normIFIDFArr[i];
+            output[i] = similarity;
+        }
 
-        reader2 = new BufferedReader(new FileReader(path));
-        Line = reader2.readLine();
+        return output;
+    }
+
+    public static void main(String[] args) throws Exception{
+
+        String path = "data/smallerListOfRestaurants.txt";
+        BufferedReader reader = new BufferedReader(new FileReader(path));
+        String Line = reader.readLine();
+        
 
         
 
+        
+        String inLine = getLineFromName("St Honore Pastries");
+        float[] similiarityArr = getSimiliarityArr(inLine); 
+
+        float mostSimilar = 0;
+        int index = 0;
+
+        for(int i = 0; i < similiarityArr.length; i++){
+            if(similiarityArr[i] > mostSimilar){
+                mostSimilar = similiarityArr[i];
+                index = i;
+            }
+        }
+
+        System.out.println(getLineFromIndex(index));
 
 
-        reader2.close();
-  
+
+
     }
 
 
