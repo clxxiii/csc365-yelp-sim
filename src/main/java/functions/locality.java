@@ -10,7 +10,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.math.*;
-  
+import java.nio.Buffer;
+import java.util.HashMap;
+import java.util.InputMismatchException;
+import java.util.ArrayList;
 
 
 public class locality {
@@ -118,32 +121,92 @@ public class locality {
 
         
     }
-    
-    public static String getCategories(String input){
+    public static String[] getCategories(String input){
         String outString = "";
         for(int i = 0; i < input.length(); i++){
+            
             if(input.charAt(i) == 'c' & input.charAt(i+1) == 'a' & input.charAt(i+2) =='t' & input.charAt(i+3) =='e' & input.charAt(i+6) == 'r'){
                 i += 13;
-
+                
                 while(input.charAt(i) != '\"'){
-                    outString += input.charAt(i);
+                        outString += input.charAt(i);
+                        i++;
                 }
                 i += input.length();
             }
         }
-        return outString;
+        return outString.split(",\s");
     }
+    public static String[] commonElements(String[] l1, String[] l2){
+        ArrayList<String> temp = new ArrayList<String>();
 
+
+        for(int i = 0; i < l1.length; i++){
+            for(int j = 0; j < l2.length; j++){
+                if(l1[i].equals(l2[j])){
+                    temp.add(l1[i]);
+                }
+            }
+        }
+
+        String[] output = new String[temp.size()];
+        for(int i = 0; i < output.length; i++){
+            output[i] = temp.get(i);
+        }
+        return output;
+
+
+
+
+    }
+    
+    public static float IFIDF(String[] commonElements, HashMap<String, Integer> freqTable){
+        float output = 0;
+
+        for(int i = 0; i < commonElements.length; i++){
+            if(freqTable.containsKey(commonElements[i])){
+                float temp = 10000 / freqTable.get(commonElements[i]);
+                output += (Math.log(temp));
+            }
+            else{
+                throw new IllegalArgumentException();
+            }
+        }
+
+        return output;
+    }
     public static void main(String[] args) throws Exception{
 
-        String test = "St Honore Pastries";
+        
+        String test = "Sonic Drive-In";
         String inLine = getLineFromName(test);
         String path = "data/smallerListOfRestaurants.txt";
         BufferedReader reader = new BufferedReader(new FileReader(path));
         String Line = reader.readLine();
         float[] distArray = new float[10002];
 
-        System.out.println(getCategories(Line));
+
+        
+
+
+
+        for(int i = 0; i < getCategories(Line).length;i++){
+            System.out.println(getCategories(Line)[i]);
+        }
+        System.out.println("---------------");
+        for(int i = 0; i < getCategories(inLine).length;i++){
+            System.out.println(getCategories(inLine)[i]);
+        }
+
+        System.out.println("---------------");
+        String[] commonElements = commonElements(getCategories(Line), getCategories(inLine));
+    
+        for(int i = 0; i < commonElements.length; i++){
+            System.out.println(commonElements[i]);
+        }
+
+        
+
         //Fill Distance Array - Array representing distance from chosen restaurant
         int count = 0;
 
@@ -154,13 +217,37 @@ public class locality {
         }
         reader.close();
 
-        reader = new BufferedReader(new FileReader(path));
+        BufferedReader reader2 = new BufferedReader(new FileReader(path));
+
+        Line = reader2.readLine();
+        //Create Frequency Table
+        HashMap<String, Integer> freqTable = new HashMap<String, Integer>();
+        
+        while(Line != null){
+            for(int i = 0; i < getCategories(Line).length; i++){
+                String ithCategory = getCategories(Line)[i];
+
+                if(freqTable.containsKey(ithCategory)){
+                    freqTable.replace(ithCategory, freqTable.get(ithCategory) + 1);
+                }
+                else{
+                    freqTable.put(ithCategory, 1);
+                }
+            }
+            Line = reader2.readLine();
+        }
+
+        System.out.println(IFIDF(commonElements, freqTable));
 
 
-        while(Line != null){}
+        reader2 = new BufferedReader(new FileReader(path));
+        Line = reader2.readLine();
+
+        
 
 
-        reader.close();
+
+        reader2.close();
   
     }
 

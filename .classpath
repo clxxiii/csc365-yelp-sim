@@ -11,9 +11,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-
 	<classpathentry kind="lib" path="lib/json-simple-1.1.1-20140905.jar"/>
-
 	<classpathentry kind="src" path="target/generated-sources/annotations">
 		<attributes>
 			<attribute name="optional" value="true"/>
