@@ -47,14 +47,26 @@ public class HelloApplication {
   }
 
   @GetMapping("/recommend")
-  public ArrayList<String> recommendBusinees(
-    @RequestParam(value = "id", defaultValue = "0") String id
-  ) {
-    // Run prediction algorithm...
 
-    ArrayList<String> response = new ArrayList<String>();
-    response.add("Business 1");
-    response.add("Business 2");
-    return response;
+  public String recommendBusinees(@RequestParam(value = "id", defaultValue = "0") String id) {
+    try {
+      String inLine = locality.getLineFromName(id);
+      float[] simArr = locality.getSimiliarityArr(inLine);
+      float mostSimilar = 0;
+      int index = 0;
+
+      for (int i = 0; i < simArr.length; i++) {
+        if (simArr[i] > mostSimilar) {
+          mostSimilar = simArr[i];
+          index = i;
+        }
+      }
+      return locality.getLineFromIndex(index);
+
+    } catch (Exception e) {
+    }
+    ;
+
+    return "";
   }
 }
