@@ -159,7 +159,23 @@ public class locality {
 
 
     }
-    
+    public static float[] getDistArr(String input) throws Exception{
+        String path = "data/smallerListOfRestaurants.txt";
+        BufferedReader reader = new BufferedReader(new FileReader(path));
+        String Line = reader.readLine();
+        int count = 0;
+        float[] distArray = new float[10000];
+        while(Line != null){
+            distArray[count] = getDistance(getCoordinates(inLine), getCoordinates(Line));
+            count++;
+            Line = reader.readLine();
+        }
+
+        return distArray;
+        
+        reader.close();
+    }
+
     public static float IFIDF(String[] commonElements, HashMap<String, Integer> freqTable){
         float output = 0;
 
@@ -183,7 +199,7 @@ public class locality {
         String path = "data/smallerListOfRestaurants.txt";
         BufferedReader reader = new BufferedReader(new FileReader(path));
         String Line = reader.readLine();
-        float[] distArray = new float[10002];
+        
 
 
         
@@ -210,12 +226,7 @@ public class locality {
         //Fill Distance Array - Array representing distance from chosen restaurant
         int count = 0;
 
-        while(Line != null){
-            distArray[count] = getDistance(getCoordinates(inLine), getCoordinates(Line));
-            count++;
-            Line = reader.readLine();
-        }
-        reader.close();
+        
 
         BufferedReader reader2 = new BufferedReader(new FileReader(path));
 
@@ -238,6 +249,8 @@ public class locality {
         }
 
         System.out.println(IFIDF(commonElements, freqTable));
+
+
 
 
         reader2 = new BufferedReader(new FileReader(path));
