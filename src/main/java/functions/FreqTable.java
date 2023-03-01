@@ -5,30 +5,32 @@ import java.util.*;
 
 public class FreqTable implements java.io.Serializable {
 
+  public FreqTable(){}
+
   static final class Node {
 
-    Object key;
+    String key;
     Node next;
     int count;
 
     // Object value;
-    Node(Object k, Node n) {
+    Node(String k, Node n) {
       key = k;
       next = n;
       count = 0;
     }
 
-    Node(Object k, Node n, int c) {
+    Node(String k, Node n, int c) {
       key = k;
       next = n;
       count = c;
     }
   }
 
-  Node[] table = new Node[8]; // always a power of 2
+  Node[] table = new Node[8]; //always a power of 2
   int size = 0;
 
-  boolean contains(Object key) {
+  boolean contains(String key) {
     int h = key.hashCode();
     int i = h & (table.length - 1);
     for (Node e = table[i]; e != null; e = e.next) {
@@ -38,7 +40,7 @@ public class FreqTable implements java.io.Serializable {
     return false;
   }
 
-  void add(Object key) {
+  void add(String key) {
     int h = key.hashCode();
     int i = h & (table.length - 1);
     for (Node e = table[i]; e != null; e = e.next) {
@@ -53,7 +55,7 @@ public class FreqTable implements java.io.Serializable {
       resize();
   }
 
-  int getCount(Object key) {
+  int getCount(String key) {
     int h = key.hashCode();
     int i = h & (table.length - 1);
 
@@ -75,13 +77,13 @@ public class FreqTable implements java.io.Serializable {
       for (Node e = oldTable[i]; e != null; e = e.next) {
         int h = e.key.hashCode();
         int j = h & (newTable.length - 1);
-        newTable[j] = new Node(e.key, newTable[j]);
+        newTable[j] = new Node(e.key, newTable[j], e.count);
       }
     }
     table = newTable;
   }
 
-  void remove(Object key) {
+  void remove(String key) {
     int h = key.hashCode();
     int i = h & (table.length - 1);
     Node e = table[i], p = null;
@@ -104,20 +106,20 @@ public class FreqTable implements java.io.Serializable {
         System.out.println(e.key);
   }
 
-  private void writeObject(ObjectOutputStream s) throws Exception {
-    s.defaultWriteObject();
-    s.writeInt(size);
-    for (int i = 0; i < table.length; ++i) {
-      for (Node e = table[i]; e != null; e = e.next) {
-        s.writeObject(e.key);
-      }
-    }
-  }
+  // private void writeObject(ObjectOutputStream s) throws Exception {
+  //   s.defaultWriteObject();
+  //   s.writeInt(size);
+  //   for (int i = 0; i < table.length; ++i) {
+  //     for (Node e = table[i]; e != null; e = e.next) {
+  //       s.writeObject(e.key);
+  //     }
+  //   }
+  // }
 
-  private void readObject(ObjectInputStream s) throws Exception {
-    s.defaultReadObject();
-    int n = s.readInt();
-    for (int i = 0; i < n; ++i)
-      add(s.readObject());
-  }
+  // private void readObject(ObjectInputStream s) throws Exception {
+  //   s.defaultReadObject();
+  //   int n = s.readInt();
+  //   for (int i = 0; i < n; ++i)
+  //     add(s.readObject());
+  // }
 }

@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -185,12 +184,12 @@ public class locality {
 
         
     }
-    public static float IFIDF(String[] commonElements, HashMap<String, Integer> freqTable){
+    public static float IFIDF(String[] commonElements, FreqTable freqTable){
         float output = 0;
 
         for(int i = 0; i < commonElements.length; i++){
-            if(freqTable.containsKey(commonElements[i])){
-                float temp = 10000 / freqTable.get(commonElements[i]);
+            if(freqTable.contains(commonElements[i])){
+                float temp = 10000 / freqTable.getCount(commonElements[i]);
                 output += (Math.log(temp));
             }
             else{
@@ -200,7 +199,7 @@ public class locality {
 
         return output;
     }
-    public static float[] getIFIDFArr(String input, HashMap<String, Integer> freqTable) throws Exception{
+    public static float[] getIFIDFArr(String input, FreqTable freqTable) throws Exception{
 
         String path = "data/smallerListOfRestaurants.txt";
         BufferedReader reader = new BufferedReader(new FileReader(path));
@@ -209,7 +208,12 @@ public class locality {
         float[] IFIDFArr = new float[10000];
 
         while(Line != null){
-            IFIDFArr[count] = IFIDF(commonElements(getCategories(input), getCategories(Line)), freqTable);
+            if(Line.equals(input)){
+                IFIDFArr[count] = -1;
+            }
+            else{
+                IFIDFArr[count] = IFIDF(commonElements(getCategories(input), getCategories(Line)), freqTable);
+            }
             count++;
             Line = reader.readLine();
         }
@@ -217,23 +221,21 @@ public class locality {
         reader.close();
         return IFIDFArr;
     }
-    public static HashMap<String, Integer> getFreqTable() throws Exception{
+    public static FreqTable getFreqTable() throws Exception{
         String path = "data/smallerListOfRestaurants.txt";
         BufferedReader reader = new BufferedReader(new FileReader(path));
         String Line = reader.readLine();
 
-        HashMap<String, Integer> freqTable = new HashMap<String, Integer>();
-        
+    
+        FreqTable freqTable = new FreqTable();
+
+
         while(Line != null){
             for(int i = 0; i < getCategories(Line).length; i++){
                 String ithCategory = getCategories(Line)[i];
 
-                if(freqTable.containsKey(ithCategory)){
-                    freqTable.replace(ithCategory, freqTable.get(ithCategory) + 1);
-                }
-                else{
-                    freqTable.put(ithCategory, 1);
-                }
+                freqTable.add(ithCategory);
+
             }
             Line = reader.readLine();
         }
@@ -263,7 +265,7 @@ public class locality {
     }
     public static float[] getSimiliarityArr(String inLine) throws Exception{
         float[] output = new float[10000];
-        HashMap<String, Integer> freqTable = getFreqTable();
+        FreqTable freqTable = getFreqTable();
         float[] IFIDFArr = getIFIDFArr(inLine, freqTable);
         float[] distArr = getDistArr(inLine);
 

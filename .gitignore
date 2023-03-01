@@ -1,6 +1,8 @@
 bin
 **.class
-data
 node_modules
 target
 .DS_Store
+datanarrower
+data/yelp_academic_dataset_review.txt
+data/yelp_academic_dataset_business.txt
