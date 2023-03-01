@@ -48,11 +48,11 @@ public class HelloApplication {
 
   @GetMapping("/recommend")
 
-  public String recommendBusinees(@RequestParam(value = "id", defaultValue = "0") String id) {
+  public String[] recommendBusinees(@RequestParam(value = "id", defaultValue = "0") String id) {
     try {
       String inLine = locality.getLineFromName(id);
       float[] simArr = locality.getSimiliarityArr(inLine);
-      float mostSimilar = 0;
+      float mostSimilar = -1;
       int index = 0;
 
       for (int i = 0; i < simArr.length; i++) {
@@ -61,12 +61,12 @@ public class HelloApplication {
           index = i;
         }
       }
-      return locality.getLineFromIndex(index);
-
+      String[] outArr = {locality.getLineFromIndex(index)};
+      return outArr;
     } catch (Exception e) {
     }
     ;
 
-    return "";
+    return new String[0];
   }
 }

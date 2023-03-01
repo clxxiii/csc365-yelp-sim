@@ -171,9 +171,13 @@ public class locality {
         int count = 0;
         float[] distArray = new float[10000];
         while(Line != null){
-            distArray[count] = 1 / getDistance(getCoordinates(input), getCoordinates(Line));
-            count++;
-            Line = reader.readLine();
+            
+                distArray[count] = 1 / getDistance(getCoordinates(input), getCoordinates(Line));
+                count++;
+                Line = reader.readLine();
+        
+
+            
         }
 
         reader.close();
@@ -275,15 +279,37 @@ public class locality {
 
         for(int i = 0; i < output.length; i++){
             float similarity = 0;
+
             similarity -= distArr[i];
-            similarity += normIFIDFArr[i];
+            similarity += IFIDFArr[i];
+
             output[i] = similarity;
+            
         }
 
         return output;
     }
+    public static String getState(String inLine){
+        String state = "";
+        for(int i = 0; i < inLine.length(); i++){
+            if(i + 5 < inLine.length() & inLine.charAt(i) == 's' & inLine.charAt(i+1) == 't' & inLine.charAt(i+2) == 'a' & inLine.charAt(i+3) == 't' & inLine.charAt(i+4) == 'e'){
+                i += 8;
+                while(inLine.charAt(i) != '\"'){
+                    state += inLine.charAt(i);
+                    i++;
+                }
+                return state;
+            }
+            
+        }
+        return "";
+    }
 
     public static void main(String[] args) throws Exception{
+
+
+        
+
 
         String path = "data/smallerListOfRestaurants.txt";
         BufferedReader reader = new BufferedReader(new FileReader(path));
@@ -291,16 +317,16 @@ public class locality {
         
 
         
-
-        
         String inLine = getLineFromName("St Honore Pastries");
+        
         float[] similiarityArr = getSimiliarityArr(inLine); 
-
-        float mostSimilar = 0;
+        
+        float mostSimilar = 100000;
         int index = 0;
-
+        
         for(int i = 0; i < similiarityArr.length; i++){
-            if(similiarityArr[i] > mostSimilar){
+            
+            if(similiarityArr[i] < mostSimilar){
                 mostSimilar = similiarityArr[i];
                 index = i;
             }

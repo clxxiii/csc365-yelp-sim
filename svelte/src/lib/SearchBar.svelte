@@ -10,6 +10,10 @@
   let color: string;
 
   let input: HTMLInputElement;
+
+  export function getInput() {
+    return input.value;
+  }
   const keydown: (event?: KeyboardEvent) => void = (event) => {
     // Initialize fzf 
     if (fzf == undefined && list != undefined) {

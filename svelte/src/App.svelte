@@ -23,7 +23,7 @@
 		loadingVisible = true;
 		// Request Recommendations
 		const recommendationReq = await fetch(
-			"http://localhost:8080/recommend?id=St%20Honore%20Pastries"
+			"http://localhost:8080/recommend?id=" + search.getInput()
 		);
 		recommendations = await recommendationReq.json();
 		loadingVisible = false;
@@ -33,7 +33,7 @@
 
 <main>
 	<LoadingRestaurants bind:this={load} />
-	<SearchBar bind:this={search} {getRecommendation} list={restaurantList} />
+	<SearchBar bind:this={search} {getRecommendation} list={restaurantList[1]} />
 	<LoadingRecommendations visible={loadingVisible} />
 	<div class="recommendations">
 		{#each recommendations as rec}
