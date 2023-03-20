@@ -21,6 +21,24 @@ import javax.swing.*;
 
 public class locality {
 
+
+    public static int wordIndex(String key, String inLine){
+       String temp = "";
+        for(int i = 0; i < inLine.length();i++){
+            int count = 0;
+            while(inLine.charAt(i) == key.charAt(count)){
+                temp += inLine.charAt(i);
+                count++;
+            }
+            if(temp.equals(key)){
+                return i;
+            }
+        }
+        return -1;
+ 
+    }
+
+
     public static String getName(String input){
         String name = "";
         for(int i = 0; i < input.length(); i++){
@@ -309,32 +327,39 @@ public class locality {
 
     public static void main(String[] args) throws Exception{
 
-
         
-
-
-        String path = "data/smallerListOfRestaurants.txt";
-        BufferedReader reader = new BufferedReader(new FileReader(path));
-        String Line = reader.readLine();
-        
-
-        
-        String inLine = getLineFromName("St Honore Pastries");
-        
-        float[] similiarityArr = getSimiliarityArr(inLine); 
-        
-        float mostSimilar = 100000;
-        int index = 0;
-        
-        for(int i = 0; i < similiarityArr.length; i++){
-            
-            if(similiarityArr[i] < mostSimilar){
-                mostSimilar = similiarityArr[i];
-                index = i;
-            }
+        ThrowawayHash ht = new ThrowawayHash();
+        for(int i = 0; i < 100; i++){
+            Integer x = i;
+            ht.add("Test" + i, i + "");
         }
+        ht.printAll();
 
-        System.out.println(getLineFromIndex(index));
+        
+        //System.out.println(wordIndex("Test", "aTest"));
+
+        // String path = "data/smallerListOfRestaurants.txt";
+        // BufferedReader reader = new BufferedReader(new FileReader(path));
+        // String Line = reader.readLine();
+        
+
+        
+        // String inLine = getLineFromName("St Honore Pastries");
+        
+        // float[] similiarityArr = getSimiliarityArr(inLine); 
+        
+        // float mostSimilar = 100000;
+        // int index = 0;
+        
+        // for(int i = 0; i < similiarityArr.length; i++){
+            
+        //     if(similiarityArr[i] < mostSimilar){
+        //         mostSimilar = similiarityArr[i];
+        //         index = i;
+        //     }
+        // }
+
+        // System.out.println(getLineFromIndex(index));
 
 
 
