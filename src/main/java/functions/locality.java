@@ -1,24 +1,8 @@
 package main.java.functions;
 
-import java.awt.Dimension;
-import java.awt.Point;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.math.*;
-import java.nio.Buffer;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Scanner;
-import javax.swing.*;
 
 public class locality {
 
