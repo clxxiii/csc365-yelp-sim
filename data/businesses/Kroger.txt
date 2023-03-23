@@ -1,0 +1,1 @@
+Kroger;[Grocery,Food,Delis,Fashion,Department Stores,Shopping,Restaurants,Beer,Wine & Spirits]

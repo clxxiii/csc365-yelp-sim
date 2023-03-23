@@ -1,8 +1,15 @@
 package main.java.functions;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.io.PrintWriter;
+import java.io.File;
+
+
 
 public class locality {
 
@@ -238,9 +245,15 @@ public class locality {
     return IFIDFArr;
   }
 
-  public static FreqTable getFreqTable() throws Exception {
-    String path = "data/smallerListOfRestaurants.txt";
-    BufferedReader reader = new BufferedReader(new FileReader(path));
+  public static FreqTable getFreqTable(HT ht) throws Exception {
+    
+    String path = "data/businesses";
+
+    BufferedReader reader;
+
+
+
+
     String Line = reader.readLine();
 
     FreqTable freqTable = new FreqTable();
@@ -306,6 +319,20 @@ public class locality {
     return output;
   }
 
+  public static HT getP2Hash() throws Exception{
+    String path = "data/smallerListOfRestaurants.txt";
+    BufferedReader reader = new BufferedReader(new FileReader(path));
+    String Line = reader.readLine();
+
+    HT ht = new HT();
+
+    while(Line != null){
+      ht.add(getName(Line), getName(Line) + ".txt");      
+      Line = reader.readLine();
+    }
+
+    return ht;
+  }
   public static String getState(String inLine) {
     String state = "";
     for (int i = 0; i < inLine.length(); i++) {
@@ -327,16 +354,71 @@ public class locality {
     }
     return "";
   }
-
+  public static String tooString(String[] list){
+    String out = "[";
+    for(int i = 0; i < list.length; i++){
+      if(i >= list.length -1) out += list[i];
+      else out += list[i] + ",";
+    }
+    return out + "]";
+  }
   public static void main(String[] args) throws Exception {
-    // ThrowawayHash ht = new ThrowawayHash();
-    // for(int i = 0; i < 100; i++){
-    //     Integer x = i;
-    //     ht.add("Test" + i, i + "");
-    // }
-    // ht.printAll();
+    
+    BufferedWriter bw = new BufferedWriter(new FileWriter("data/businessList.txt"));
+    
+    BufferedReader br = new BufferedReader(new FileReader("data/smallerListOfRestaurants.txt"));
 
-    //System.out.println(wordIndex("Test", "aTest"));
+    String Line = br.readLine();
+    while(Line!=null){
+      
+    }
+    
+    bw.close;
+
+
+    // HT ht = getP2Hash();
+    // System.out.println(ht.getValue("White Horse Tavern and Wine Bar"));
+    // Scanner in = new Scanner(System.in);
+    // String fileName = ht.getValue(in.nextLine());
+
+    // BufferedReader reader = new BufferedReader(new FileReader("data/businesses/" + fileName));
+
+    // System.out.println(reader.readLine().split(";")[1]);
+    
+
+    // reader.close();
+
+
+    
+    
+    ///////////////////////////////////Code to create file system///////////////////////////////////
+
+    // BufferedReader reader = new BufferedReader(
+    //   new FileReader("data/smallerListOfRestaurants.txt")
+    // );White Horse Tavern and Wine Bar
+
+    // String Line = reader.readLine();
+    // String outString = "";
+    // int count = 0;
+    // while(Line != null){
+    //   count += 1;
+
+    //    outString = "";
+    //    outString += getName(Line) + ";" + tooString(getCategories(Line));
+
+    //    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("data/businesses/" + getName(Line) + ".txt")));
+    //    out.write(outString);
+    //    out.close();
+      
+    //   Line = reader.readLine();
+    // }
+    // System.out.println(count);
+
+    // reader.close();
+
+
+
+    //////////////////////////Algorithmic Test Code///////////////////////////////////
 
     // String path = "data/smallerListOfRestaurants.txt";
     // BufferedReader reader = new BufferedReader(new FileReader(path));
