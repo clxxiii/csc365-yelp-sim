@@ -22,7 +22,7 @@
 
     let find = fzf.find(input.value)
     fzf.find(input.value);
-    entries = find.map(x => x.item);
+    entries = find.map(x => x.item).slice(0,10);
 
     if (event?.key == "Enter" && entries.includes(input.value)) {
       getRecommendation(input.value);
