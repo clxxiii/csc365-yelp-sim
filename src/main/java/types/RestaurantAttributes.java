@@ -1,6 +1,6 @@
 package main.java.types;
 
-public class RestaurantAttributes {
+public class RestaurantAttributes implements java.io.Serializable {
 
   public String RestaurantsDelivery;
   public String OutdoorSearing;

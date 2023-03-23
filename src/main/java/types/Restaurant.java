@@ -1,6 +1,6 @@
 package main.java.types;
 
-public class Restaurant {
+public class Restaurant implements java.io.Serializable {
 
   public String business_id;
   public String name;

@@ -1,6 +1,6 @@
 package main.java.types;
 
-public class Hours {
+public class Hours implements java.io.Serializable {
 
   public String Sunday;
   public String Monday;
