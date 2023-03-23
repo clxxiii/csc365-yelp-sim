@@ -1,26 +1,15 @@
 package main.java.com.example.yelprecommender;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.math.*;
-import java.nio.Buffer;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.InputMismatchException;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Scanner;
 import main.java.functions.locality;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class HelloApplication {
+public class Endpoints {
 
   @GetMapping("/get_names")
   public ArrayList<ArrayList<String>> listBusinessNames() throws Exception {
@@ -47,8 +36,9 @@ public class HelloApplication {
   }
 
   @GetMapping("/recommend")
-
-  public String[] recommendBusinees(@RequestParam(value = "id", defaultValue = "0") String id) {
+  public String[] recommendBusinees(
+    @RequestParam(value = "id", defaultValue = "0") String id
+  ) {
     try {
       String inLine = locality.getLineFromName(id);
       float[] simArr = locality.getSimiliarityArr(inLine);
@@ -61,12 +51,9 @@ public class HelloApplication {
           index = i;
         }
       }
-      String[] outArr = {locality.getLineFromIndex(index)};
+      String[] outArr = { locality.getLineFromIndex(index) };
       return outArr;
-    } catch (Exception e) {
-    }
-    ;
-
+    } catch (Exception e) {}
     return new String[0];
   }
 }
