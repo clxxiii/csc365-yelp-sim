@@ -2,6 +2,7 @@ package main.java.functions;
 
 import java.io.*;
 import java.util.*;
+import java.io.Serializable;
 
 import javax.swing.text.html.HTMLDocument;
 
@@ -9,12 +10,12 @@ public class HT implements java.io.Serializable {
 
   public HT(){}
 
-  static final class Node {
+  static final class Node implements java.io.Serializable{
 
 
     //Where keys are business names and values are file names
     String key;
-    String value;
+    String value; 
     Node next;
 
     // Object value;

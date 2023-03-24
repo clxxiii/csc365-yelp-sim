@@ -1,13 +1,17 @@
 package main.java.functions;
-
+import java.io.Serializable;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.PrintWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 
 
@@ -245,13 +249,11 @@ public class locality {
     return IFIDFArr;
   }
 
-  public static FreqTable getFreqTable(HT ht) throws Exception {
+  public static FreqTable getFreqTable() throws Exception {
     
-    String path = "data/businesses";
+    String path = "data/smallerListOfBusinesses";
 
-    BufferedReader reader;
-
-
+    BufferedReader reader = new BufferedReader(new FileReader(path));
 
 
     String Line = reader.readLine();
@@ -318,19 +320,15 @@ public class locality {
 
     return output;
   }
-
-  public static HT getP2Hash() throws Exception{
-    String path = "data/smallerListOfRestaurants.txt";
-    BufferedReader reader = new BufferedReader(new FileReader(path));
-    String Line = reader.readLine();
-
-    HT ht = new HT();
-
-    while(Line != null){
-      ht.add(getName(Line), getName(Line) + ".txt");      
-      Line = reader.readLine();
-    }
-
+  public static void serializeHT(HT ht, String fileName) throws Exception{
+    ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName));
+    out.writeObject(ht);
+    out.close();
+  }
+  public static HT deserializeHT(String fileName) throws Exception{
+    ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName));
+    HT ht = (HT) in.readObject();
+    in.close();
     return ht;
   }
   public static String getState(String inLine) {
@@ -364,16 +362,17 @@ public class locality {
   }
   public static void main(String[] args) throws Exception {
     
-    BufferedWriter bw = new BufferedWriter(new FileWriter("data/businessList.txt"));
-    
-    BufferedReader br = new BufferedReader(new FileReader("data/smallerListOfRestaurants.txt"));
 
-    String Line = br.readLine();
-    while(Line!=null){
-      
-    }
+    // BufferedWriter bw = new BufferedWriter(new FileWriter("data/businessList.txt"));
     
-    bw.close;
+    // BufferedReader br = new BufferedReader(new FileReader("data/smallerListOfRestaurants.txt"));
+
+    // String Line = br.readLine();
+    // while(Line!=null){
+
+    // }
+    
+    // bw.close;
 
 
     // HT ht = getP2Hash();
