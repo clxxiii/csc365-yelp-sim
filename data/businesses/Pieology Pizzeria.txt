@@ -1,1 +1,0 @@
-Pieology Pizzeria;[Pizza,Gluten-Free,Restaurants,Vegan,Fast Food]

@@ -13,14 +13,14 @@ public class Endpoints {
 
   @GetMapping("/get_names")
   public ArrayList<ArrayList<String>> listBusinessNames() throws Exception {
-    // This is just a placeholder to test the frontend
     String path = "data/smallerListOfRestaurants.txt";
     BufferedReader reader = new BufferedReader(new FileReader(path));
     String Line = reader.readLine();
 
     ArrayList<String> ids = new ArrayList<String>();
     ArrayList<String> names = new ArrayList<String>();
-    ArrayList<ArrayList<String>> listOfRestraunts = new ArrayList<ArrayList<String>>();
+    ArrayList<ArrayList<String>> listOfRestraunts =
+        new ArrayList<ArrayList<String>>();
 
     while (Line != null) {
       names.add(locality.getName(Line));
@@ -37,8 +37,7 @@ public class Endpoints {
 
   @GetMapping("/recommend")
   public String[] recommendBusinees(
-    @RequestParam(value = "id", defaultValue = "0") String id
-  ) {
+      @RequestParam(value = "id", defaultValue = "0") String id) {
     try {
       String inLine = locality.getLineFromName(id);
       float[] simArr = locality.getSimiliarityArr(inLine);
@@ -51,9 +50,10 @@ public class Endpoints {
           index = i;
         }
       }
-      String[] outArr = { locality.getLineFromIndex(index) };
+      String[] outArr = {locality.getLineFromIndex(index)};
       return outArr;
-    } catch (Exception e) {}
+    } catch (Exception e) {
+    }
     return new String[0];
   }
 }

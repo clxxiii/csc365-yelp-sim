@@ -1,1 +1,0 @@
-theory;[Restaurants,American (New),Bars,Nightlife,French]

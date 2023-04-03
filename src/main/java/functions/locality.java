@@ -1,19 +1,11 @@
 package main.java.functions;
-import java.io.Serializable;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.io.PrintWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-
-
 
 public class locality {
 
@@ -35,12 +27,8 @@ public class locality {
   public static String getName(String input) {
     String name = "";
     for (int i = 0; i < input.length(); i++) {
-      if (
-        input.charAt(i) == 'n' &
-        input.charAt(i + 1) == 'a' &
-        input.charAt(i + 2) == 'm' &
-        input.charAt(i + 3) == 'e'
-      ) {
+      if (input.charAt(i) == 'n' & input.charAt(i + 1) == 'a' &
+          input.charAt(i + 2) == 'm' & input.charAt(i + 3) == 'e') {
         i += 7;
         while (input.charAt(i) != '\"') {
           name += input.charAt(i);
@@ -55,12 +43,8 @@ public class locality {
   public static String getID(String input) {
     String ID = "";
     for (int i = 0; i < input.length(); i++) {
-      if (
-        input.charAt(i) == 'b' &
-        input.charAt(i + 1) == 'u' &
-        input.charAt(i + 2) == 's' &
-        input.charAt(i + 3) == 'i'
-      ) {
+      if (input.charAt(i) == 'b' & input.charAt(i + 1) == 'u' &
+          input.charAt(i + 2) == 's' & input.charAt(i + 3) == 'i') {
         i += 14;
         while (input.charAt(i) != '\"') {
           ID += input.charAt(i);
@@ -73,9 +57,8 @@ public class locality {
   }
 
   public static String getLineFromName(String name) throws Exception {
-    BufferedReader reader = new BufferedReader(
-      new FileReader("data/smallerListOfRestaurants.txt")
-    );
+    BufferedReader reader =
+        new BufferedReader(new FileReader("data/smallerListOfRestaurants.txt"));
     String Line = reader.readLine();
 
     while (Line != null) {
@@ -92,14 +75,9 @@ public class locality {
   public static float[] getCoordinates(String input) {
     String out1 = "", out2 = "";
     for (int i = 0; i < input.length() - 1; i++) {
-      if (
-        i + 13 < input.length() &
-        input.charAt(i) == 'l' &
-        input.charAt(i + 1) == 'a' &
-        input.charAt(i + 2) == 't' &
-        input.charAt(i + 4) == 't' &
-        input.charAt(i + 7) == 'e'
-      ) {
+      if (i + 13 < input.length() & input.charAt(i) == 'l' &
+          input.charAt(i + 1) == 'a' & input.charAt(i + 2) == 't' &
+          input.charAt(i + 4) == 't' & input.charAt(i + 7) == 'e') {
         i += 10;
 
         while (input.charAt(i) != ',') {
@@ -116,7 +94,7 @@ public class locality {
       }
     }
 
-    float[] output = { Float.parseFloat(out1), Float.parseFloat(out2) };
+    float[] output = {Float.parseFloat(out1), Float.parseFloat(out2)};
     return output;
   }
 
@@ -130,13 +108,12 @@ public class locality {
     float y1 = c1[1];
     float y2 = c2[1];
 
-    return (float) Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
+    return (float)Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
   }
 
   public static String getLineFromIndex(int Index) throws Exception {
-    BufferedReader reader = new BufferedReader(
-      new FileReader("data/smallerListOfRestaurants.txt")
-    );
+    BufferedReader reader =
+        new BufferedReader(new FileReader("data/smallerListOfRestaurants.txt"));
     String Line = reader.readLine();
     int count = 0;
     while (Line != null) {
@@ -154,13 +131,9 @@ public class locality {
   public static String[] getCategories(String input) {
     String outString = "";
     for (int i = 0; i < input.length(); i++) {
-      if (
-        input.charAt(i) == 'c' &
-        input.charAt(i + 1) == 'a' &
-        input.charAt(i + 2) == 't' &
-        input.charAt(i + 3) == 'e' &
-        input.charAt(i + 6) == 'r'
-      ) {
+      if (input.charAt(i) == 'c' & input.charAt(i + 1) == 'a' &
+          input.charAt(i + 2) == 't' & input.charAt(i + 3) == 'e' &
+          input.charAt(i + 6) == 'r') {
         i += 13;
 
         while (input.charAt(i) != '\"') {
@@ -199,7 +172,7 @@ public class locality {
     float[] distArray = new float[10000];
     while (Line != null) {
       distArray[count] =
-        1 / getDistance(getCoordinates(input), getCoordinates(Line));
+          1 / getDistance(getCoordinates(input), getCoordinates(Line));
       count++;
       Line = reader.readLine();
     }
@@ -224,7 +197,7 @@ public class locality {
   }
 
   public static float[] getIFIDFArr(String input, FreqTable freqTable)
-    throws Exception {
+      throws Exception {
     String path = "data/smallerListOfRestaurants.txt";
     BufferedReader reader = new BufferedReader(new FileReader(path));
     String Line = reader.readLine();
@@ -236,10 +209,8 @@ public class locality {
         IFIDFArr[count] = -1;
       } else {
         IFIDFArr[count] =
-          IFIDF(
-            commonElements(getCategories(input), getCategories(Line)),
-            freqTable
-          );
+            IFIDF(commonElements(getCategories(input), getCategories(Line)),
+                  freqTable);
       }
       count++;
       Line = reader.readLine();
@@ -250,11 +221,10 @@ public class locality {
   }
 
   public static FreqTable getFreqTable() throws Exception {
-    
+
     String path = "data/smallerListOfBusinesses";
 
     BufferedReader reader = new BufferedReader(new FileReader(path));
-
 
     String Line = reader.readLine();
 
@@ -300,7 +270,7 @@ public class locality {
     float[] IFIDFArr = getIFIDFArr(inLine, freqTable);
     float[] distArr = getDistArr(inLine);
 
-    //Normalize Arrays
+    // Normalize Arrays
 
     float[] normIFIDFArr = normalizeArr(IFIDFArr);
     float[] normDistArr = normalizeArr(distArr);
@@ -320,28 +290,24 @@ public class locality {
 
     return output;
   }
-  public static void serializeHT(HT ht, String fileName) throws Exception{
-    ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName));
+  public static void serializeHT(HT ht, String fileName) throws Exception {
+    ObjectOutputStream out =
+        new ObjectOutputStream(new FileOutputStream(fileName));
     out.writeObject(ht);
     out.close();
   }
-  public static HT deserializeHT(String fileName) throws Exception{
+  public static HT deserializeHT(String fileName) throws Exception {
     ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName));
-    HT ht = (HT) in.readObject();
+    HT ht = (HT)in.readObject();
     in.close();
     return ht;
   }
   public static String getState(String inLine) {
     String state = "";
     for (int i = 0; i < inLine.length(); i++) {
-      if (
-        i + 5 < inLine.length() &
-        inLine.charAt(i) == 's' &
-        inLine.charAt(i + 1) == 't' &
-        inLine.charAt(i + 2) == 'a' &
-        inLine.charAt(i + 3) == 't' &
-        inLine.charAt(i + 4) == 'e'
-      ) {
+      if (i + 5 < inLine.length() & inLine.charAt(i) == 's' &
+          inLine.charAt(i + 1) == 't' & inLine.charAt(i + 2) == 'a' &
+          inLine.charAt(i + 3) == 't' & inLine.charAt(i + 4) == 'e') {
         i += 8;
         while (inLine.charAt(i) != '\"') {
           state += inLine.charAt(i);
@@ -352,45 +318,45 @@ public class locality {
     }
     return "";
   }
-  public static String tooString(String[] list){
+  public static String tooString(String[] list) {
     String out = "[";
-    for(int i = 0; i < list.length; i++){
-      if(i >= list.length -1) out += list[i];
-      else out += list[i] + ",";
+    for (int i = 0; i < list.length; i++) {
+      if (i >= list.length - 1)
+        out += list[i];
+      else
+        out += list[i] + ",";
     }
     return out + "]";
   }
   public static void main(String[] args) throws Exception {
-    
 
-    // BufferedWriter bw = new BufferedWriter(new FileWriter("data/businessList.txt"));
-    
-    // BufferedReader br = new BufferedReader(new FileReader("data/smallerListOfRestaurants.txt"));
+    // BufferedWriter bw = new BufferedWriter(new
+    // FileWriter("data/businessList.txt"));
+
+    // BufferedReader br = new BufferedReader(new
+    // FileReader("data/smallerListOfRestaurants.txt"));
 
     // String Line = br.readLine();
     // while(Line!=null){
 
     // }
-    
-    // bw.close;
 
+    // bw.close;
 
     // HT ht = getP2Hash();
     // System.out.println(ht.getValue("White Horse Tavern and Wine Bar"));
     // Scanner in = new Scanner(System.in);
     // String fileName = ht.getValue(in.nextLine());
 
-    // BufferedReader reader = new BufferedReader(new FileReader("data/businesses/" + fileName));
+    // BufferedReader reader = new BufferedReader(new
+    // FileReader("data/businesses/" + fileName));
 
     // System.out.println(reader.readLine().split(";")[1]);
-    
 
     // reader.close();
 
-
-    
-    
-    ///////////////////////////////////Code to create file system///////////////////////////////////
+    ///////////////////////////////////Code to create file
+    /// system///////////////////////////////////
 
     // BufferedReader reader = new BufferedReader(
     //   new FileReader("data/smallerListOfRestaurants.txt")
@@ -405,19 +371,19 @@ public class locality {
     //    outString = "";
     //    outString += getName(Line) + ";" + tooString(getCategories(Line));
 
-    //    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("data/businesses/" + getName(Line) + ".txt")));
+    //    PrintWriter out = new PrintWriter(new BufferedWriter(new
+    //    FileWriter("data/businesses/" + getName(Line) + ".txt")));
     //    out.write(outString);
     //    out.close();
-      
+
     //   Line = reader.readLine();
     // }
     // System.out.println(count);
 
     // reader.close();
 
-
-
-    //////////////////////////Algorithmic Test Code///////////////////////////////////
+    //////////////////////////Algorithmic Test
+    /// Code///////////////////////////////////
 
     // String path = "data/smallerListOfRestaurants.txt";
     // BufferedReader reader = new BufferedReader(new FileReader(path));
@@ -439,6 +405,5 @@ public class locality {
     // }
 
     // System.out.println(getLineFromIndex(index));
-
   }
 }

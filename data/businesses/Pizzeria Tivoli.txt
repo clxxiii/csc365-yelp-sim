@@ -1,1 +1,0 @@
-Pizzeria Tivoli;[Food,Pizza,Nightlife,Desserts,Restaurants,Bars,Wine Bars,Italian]

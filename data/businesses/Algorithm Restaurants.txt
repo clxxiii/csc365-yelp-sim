@@ -1,1 +1,0 @@
-Algorithm Restaurants;[Food,Food Trucks,Pop-Up Restaurants,Business Consulting,Professional Services,Event Planning & Services,Street Vendors,Restaurants,Mexican,Burgers,Party Equipment Rentals,Tacos,Vegan]

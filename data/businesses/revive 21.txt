@@ -1,1 +1,0 @@
-revive 21;[Restaurants,American (Traditional),Nightlife,Sports Bars,Pubs,Bars]

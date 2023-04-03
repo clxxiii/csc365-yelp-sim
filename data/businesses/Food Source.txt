@@ -1,1 +1,0 @@
-Food Source;[Shopping,Drugstores,Delis,Mexican,Grocery,Restaurants,Food,Bakeries]

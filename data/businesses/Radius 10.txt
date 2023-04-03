@@ -1,1 +1,0 @@
-Radius 10;[Restaurants,American (New)]

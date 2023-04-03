@@ -1,1 +1,0 @@
-Bank & Main;[Coffee & Tea,Food,Restaurants,Cafes]

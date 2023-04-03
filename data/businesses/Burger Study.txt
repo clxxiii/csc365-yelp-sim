@@ -1,1 +1,0 @@
-Burger Study;[Restaurants,Beer Bar,Salad,Burgers,Bars,Nightlife]
