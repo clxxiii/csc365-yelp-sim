@@ -1,5 +1,8 @@
 package main.java.types;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 public class FrequencyTable implements java.io.Serializable {
 
   public FrequencyTable() {
@@ -101,22 +104,26 @@ public class FrequencyTable implements java.io.Serializable {
         System.out.println(e.key + " - " + e.value);
   }
 
-  // private void writeObject(ObjectOutputStream s) throws Exception {
-  // s.defaultWriteObject();
-  // s.writeInt(size);
-  // for (int i = 0; i < table.length; ++i) {
-  // for (Node e = table[i]; e != null; e = e.next) {
-  // s.writeObject(e.key);
-  // }
-  // }
-  // }
+  public void writeObject(ObjectOutputStream s) throws Exception {
+    s.defaultWriteObject();
+    s.writeInt(size);
+    for (int i = 0; i < table.length; ++i) {
+      for (Node e = table[i]; e != null; e = e.next) {
+        s.writeObject(e.key);
+        s.writeObject(e.value);
+      }
+    }
+  }
 
-  // private void readObject(ObjectInputStream s) throws Exception {
-  // s.defaultReadObject();
-  // int n = s.readInt();
-  // for (int i = 0; i < n; ++i)
-  // add(s.readObject());
-  // }
+  public void readObject(ObjectInputStream s) throws Exception {
+    s.defaultReadObject();
+    int n = s.readInt();
+    for (int i = 0; i < n; ++i) {
+      String key = (String) s.readObject();
+      String value = (String) s.readObject();
+      add(key, value);
+    }
+  }
 
   // Test of Extendible Hash
   // public static void main(String[] args) {

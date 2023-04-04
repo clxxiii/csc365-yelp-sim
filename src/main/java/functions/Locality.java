@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import main.java.types.Restaurant;
+
 public class Locality {
 
   public static String getLineFromName(String name) throws IOException {
@@ -37,14 +39,15 @@ public class Locality {
     return "";
   }
 
-  public static float[] getDistArr(String input) throws IOException {
+  public static float[] getDistArr(Restaurant input) throws IOException {
     String path = "data/business_list.txt";
     BufferedReader reader = new BufferedReader(new FileReader(path));
     String Line = reader.readLine();
     int count = 0;
     float[] distArray = new float[10010];
+    float[] coords = { input.latitude, input.longitude };
     while (Line != null) {
-      distArray[count] = 1 / Parser.getDistance(Parser.getCoordinates(input),
+      distArray[count] = 1 / Parser.getDistance(coords,
           Parser.getCoordinates(Line));
       count++;
       Line = reader.readLine();
@@ -69,7 +72,7 @@ public class Locality {
     return output;
   }
 
-  public static float[] getTFIDFArr(String input, FreqTable freqTable)
+  public static float[] getTFIDFArr(Restaurant input, FreqTable freqTable)
       throws IOException {
     String path = "data/business_list.txt";
     BufferedReader reader = new BufferedReader(new FileReader(path));
@@ -78,10 +81,10 @@ public class Locality {
     float[] IFIDFArr = new float[10010];
 
     while (Line != null) {
-      if (Line.equals(input)) {
+      if (Parser.getID(Line) == input.name) {
         IFIDFArr[count] = -1;
       } else {
-        IFIDFArr[count] = TFIDF(Parser.commonElements(Parser.getCategories(input),
+        IFIDFArr[count] = TFIDF(Parser.commonElements(input.categories,
             Parser.getCategories(Line)),
             freqTable);
       }
@@ -113,7 +116,7 @@ public class Locality {
   public static float[] normalizeArr(float[] arr) {
     float min = 1000000;
     float max = 0;
-    float[] output = new float[10000];
+    float[] output = new float[10010];
     for (int i = 0; i < arr.length; i++) {
       if (arr[i] < min) {
         min = arr[i];
@@ -129,20 +132,11 @@ public class Locality {
     return output;
   }
 
-  public static float[] getSimiliarityArr(String inLine) throws IOException {
+  public static float[] getSimiliarityArr(Restaurant res) throws IOException {
     float[] output = new float[10000];
     FreqTable freqTable = getFreqTable();
-    float[] TFIDFArr = getTFIDFArr(inLine, freqTable);
-    float[] distArr = getDistArr(inLine);
-
-    // Is this doing anything?
-
-    // float[] normIFIDFArr = normalizeArr(IFIDFArr);
-    // float[] normDistArr = normalizeArr(distArr);
-
-    if (distArr.length != 10000 || TFIDFArr.length != 10000) {
-      return new float[10];
-    }
+    float[] TFIDFArr = getTFIDFArr(res, freqTable);
+    float[] distArr = getDistArr(res);
 
     for (int i = 0; i < output.length; i++) {
       float similarity = 0;

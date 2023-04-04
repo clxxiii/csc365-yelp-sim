@@ -5,7 +5,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import main.java.functions.Parser;
-import main.java.functions.Locality;
+import main.java.functions.RestaurantManager;
+import main.java.types.Restaurant;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,24 +39,42 @@ public class Endpoints {
 
   @GetMapping("/recommend")
   public String[] recommendBusinees(
-      @RequestParam(value = "id", defaultValue = "0") String id)
-      throws IOException {
-    String inLine = Locality.getLineFromName(id);
-    float[] simArr = Locality.getSimiliarityArr(inLine);
+      @RequestParam(value = "id", defaultValue = "0") String name)
+      throws IOException,
+      ClassNotFoundException {
 
-    for (float num : simArr) {
-      System.out.println(num);
-    }
-    float mostSimilar = -1;
-    int index = 0;
+    Restaurant restaurant = RestaurantManager.getRestaurant(name);
+    String[] restaurants = RestaurantManager.getNames();
 
-    for (int i = 0; i < simArr.length; i++) {
-      if (simArr[i] > mostSimilar) {
-        mostSimilar = simArr[i];
-        index = i;
+    float[][] metrics = new float[10002][2];
+    for (int i = 0; i < restaurants.length; i++) {
+      String iName = restaurants[i];
+      if (iName != restaurant.name) {
+        Restaurant iRes = RestaurantManager.getRestaurant(name);
+        metrics[i] = RestaurantManager.getMetricTuple(restaurant, iRes);
       }
     }
-    String[] outArr = { Locality.getLineFromIndex(index) };
-    return outArr;
+
+    // TODO: Uncomment the following line to run kMeans
+    // kMeans.generate(restaurants, metrics);
+
+    /*
+     * Project 1 Similarity Code
+     * -------------------------
+     * float mostSimilar = -1;
+     * int index = 0;
+     * 
+     * for (int i = 0; i < simArr.length; i++) {
+     * if (simArr[i] > mostSimilar) {
+     * mostSimilar = simArr[i];
+     * index = i;
+     * }
+     * }
+     * 
+     * String[] outArr = { Locality.getLineFromIndex(index) };
+     * return outArr;
+     */
+
+    return null; // This is temporary so I can compile
   }
 }

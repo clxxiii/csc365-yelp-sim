@@ -4,9 +4,6 @@ node_modules
 target
 .DS_Store
 datanarrower
-data/yelp_academic_dataset_review.*
-data/yelp_academic_dataset_business.*
-data/restaurants
-data/buckets
-hashtable
+data
+!data/*.txt
 src/main/java/functions/ExtendibleHash.java

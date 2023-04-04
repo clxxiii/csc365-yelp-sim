@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 import main.java.types.ExtensibleHashTable;
 import main.java.types.Restaurant;
@@ -20,6 +21,8 @@ public class Serializer {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 
+        ArrayList<String> restaurantNames = new ArrayList<>();
+
         System.out.println("Building ExtensibleHashTable to and writing to disk...");
         BufferedReader br = new BufferedReader(new FileReader("data/business_list.txt"));
         String line = br.readLine();
@@ -27,8 +30,14 @@ public class Serializer {
         ExtensibleHashTable table = new ExtensibleHashTable("data/buckets");
 
         while (line != null) {
+            if (line.equals("")) {
+                line = br.readLine();
+                continue;
+            }
+
             float[] coords = Parser.getCoordinates(line);
             String[] categories = Parser.getCategories(line);
+            restaurantNames.add(Parser.getName(line));
             Restaurant res = new Restaurant(
                     Parser.getID(line),
                     Parser.getName(line),
@@ -55,6 +64,14 @@ public class Serializer {
         out.writeObject(table);
 
         out.close();
+        fOut.close();
+
+        FileOutputStream namesFile = new FileOutputStream("data/business_names");
+        ObjectOutputStream namesOut = new ObjectOutputStream(namesFile);
+
+        namesOut.writeObject(restaurantNames.toArray());
+
+        namesOut.close();
         fOut.close();
 
         // Test that the hashtable is functioning:
