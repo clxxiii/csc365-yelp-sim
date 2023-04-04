@@ -4,13 +4,15 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import main.java.functions.Centroid;
 import main.java.functions.Parser;
 import main.java.functions.RestaurantManager;
 import main.java.types.Restaurant;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import main.java.functions.kMeans;
 @RestController
 public class Endpoints {
 
@@ -54,6 +56,22 @@ public class Endpoints {
         metrics[i] = RestaurantManager.getMetricTuple(restaurant, iRes);
       }
     }
+
+    
+    Centroid[] centroids1 = kMeans.assignClusters(metrics, restaurants, 4);
+    Centroid[] initialCentroids = kMeans.reassignClusters(centroids1, restaurants, metrics);
+
+    for(int i = 0; i < initialCentroids.length; i++) initialCentroids[i].getWeight();
+
+    float maxWeight = 0;
+    Centroid bestCentroid = new Centroid();
+    for(int i = 0; i < initialCentroids.length; i++) if(initialCentroids[i].weight > maxWeight){ 
+      maxWeight = initialCentroids[i].weight;
+      bestCentroid = initialCentroids[i];
+    }
+
+
+
 
     // TODO: Uncomment the following line to run kMeans
     // kMeans.generate(restaurants, metrics);
