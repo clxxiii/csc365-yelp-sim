@@ -5,16 +5,17 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+
 import main.java.functions.Centroid;
 import main.java.functions.FreqTable;
 import main.java.functions.Locality;
 import main.java.functions.Parser;
 import main.java.functions.RestaurantManager;
-import main.java.functions.kMeans;
 import main.java.types.Restaurant;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import main.java.functions.kMeans;
 
 @RestController
 public class Endpoints {
@@ -45,9 +46,9 @@ public class Endpoints {
   @GetMapping("/recommend")
 
   public Restaurant[] recommendBusinees(
-
       @RequestParam(value = "name", defaultValue = "0") String name)
       throws IOException, ClassNotFoundException {
+
     System.out.println("Fetching recommendation for " + name);
     Restaurant restaurant = RestaurantManager.getRestaurant(name);
     if (restaurant == null)
@@ -59,28 +60,28 @@ public class Endpoints {
       String iName = restaurants[i];
       if (iName != restaurant.name) {
         Restaurant iRes = RestaurantManager.getRestaurant(name);
-        float[] theMetrics = RestaurantManager.getMetricTuple(restaurant, iRes, ft);
-        metrics[i] = theMetrics;
+        metrics[i] = RestaurantManager.getMetricTuple(restaurant, iRes, ft);
       }
     }
 
-    Random rnd = new Random();
-    rnd.setSeed(12);
-    Centroid[] initialCentroids = kMeans.assignClusters(metrics, restaurants, 50);
+    // Random rnd = new Random();
+    // rnd.setSeed(12);
+    // Centroid[] initialCentroids = kMeans.assignClusters(metrics, restaurants,
+    // 50);
 
-    // Centroid[] initialCentroids = kMeans.reassignClusters(centroids1,
+    // // Centroid[] initialCentroids = kMeans.reassignClusters(centroids1,
     // restaurants, metrics);
 
-    for (int i = 0; i < initialCentroids.length; i++)
-      initialCentroids[i].getWeight();
+    // for(int i = 0; i < initialCentroids.length; i++)
+    // initialCentroids[i].getWeight();
 
-    float maxWeight = 0;
-    Centroid bestCentroid = new Centroid();
-    for (int i = 0; i < initialCentroids.length; i++)
-      if (initialCentroids[i].weight > maxWeight) {
-        maxWeight = initialCentroids[i].weight;
-        bestCentroid = initialCentroids[i];
-      }
+    // float maxWeight = 0;
+    // Centroid bestCentroid = new Centroid();
+    // for(int i = 0; i < initialCentroids.length; i++)
+    // if(initialCentroids[i].weight > maxWeight){
+    // maxWeight = initialCentroids[i].weight;
+    // bestCentroid = initialCentroids[i];
+    // }
 
     // TODO: Uncomment the following line to run kMeans
     // kMeans.generate(restaurants, metrics);
@@ -90,27 +91,22 @@ public class Endpoints {
      * -------------------------
      * float mostSimilar = -1;
      * int index = 0;
-     *
+     * 
      * for (int i = 0; i < simArr.length; i++) {
      * if (simArr[i] > mostSimilar) {
      * mostSimilar = simArr[i];
      * index = i;
      * }
      * }
-     *
+     * 
      * String[] outArr = { Locality.getLineFromIndex(index) };
      * return outArr;
      */
 
-    String[] tempArr = new String[bestCentroid.businesses.size()];
-    for (int i = 0; i < bestCentroid.businesses.size(); i++) {
-      tempArr[i] = bestCentroid.businesses.get(i).name;
-    }
-
-    Restaurant[] out = new Restaurant[tempArr.length];
-    for (int i = 0; i < tempArr.length; i++) {
-      out[i] = RestaurantManager.getRestaurant(tempArr[i]);
-    }
+    // String[] tempArr = new String[bestCentroid.businesses.size()];
+    // for(int i = 0; i < bestCentroid.businesses.size(); i++){
+    // tempArr[i] = bestCentroid.businesses.get(i).name;
+    // }
 
     return out;
   }

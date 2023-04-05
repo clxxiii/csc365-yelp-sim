@@ -49,7 +49,7 @@ public class Serializer {
             FileOutputStream file = new FileOutputStream("data/restaurants/" +
                     res.business_id.trim());
             ObjectOutputStream out = new ObjectOutputStream(file);
-            table.add(res.name, res.business_id.trim());
+            table.add(res.name, res.business_id);
             out.writeObject(res);
 
             out.close();
