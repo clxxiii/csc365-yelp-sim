@@ -26,9 +26,10 @@
 		loadingVisible = true;
 		// Request Recommendations
 		const recommendationReq = await fetch(
-			"http://localhost:8080/recommend?name=" + search.getInput()
+			"http://localhost:8080/recommend?id=" + search.getInput()
 		);
 		recommendations = await recommendationReq.json();
+		console.log(recommendations);
 		loadingVisible = false;
 		search.enable();
 	};

@@ -1,6 +1,4 @@
 <script lang="ts">
-	import Stars from "./Stars.svelte";
-
 	export let text: Restaurant;
 </script>
 
@@ -11,7 +9,6 @@
 		<b>Tags:</b>
 		{text.categories}
 	</div>
-	<!-- <div class="stars"><Stars rating={data.stars} /></div> -->
 </div>
 
 <style>
@@ -19,7 +16,7 @@
 		position: relative;
 		transition: 0.3s;
 		width: 40%;
-		height: 150px;
+		height: 60px;
 		margin: 10px;
 		padding: 5px;
 		background-color: #5557;
