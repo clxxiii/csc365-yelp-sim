@@ -1,6 +1,7 @@
 package main.java.functions;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.springframework.expression.spel.ast.Assign;
 import main.java.functions.Parser;
@@ -41,11 +42,11 @@ public class kMeans {
 
         for(int i = 0; i < nameArr.length; i++){
             int centroidIndex = 0;
-            float minDistanceToCluster = 1000;
+            float minDistanceToCluster = 1000000;
             for(int j = 0; j < k; j++){
                 if(Parser.getDistance(metricArray[i], centroids[j].getCoordinates()) < minDistanceToCluster){
                     centroidIndex = j;
-                    minDistanceToCluster = Parser.getDistance(metricArray[i], centroids[0].getCoordinates());
+                    minDistanceToCluster = Parser.getDistance(metricArray[i], centroids[j].getCoordinates());
                 }
             }
             centroids[centroidIndex].businesses.add(new Business(nameArr[i], metricArray[i][0], metricArray[i][1]));
@@ -65,7 +66,7 @@ public class kMeans {
             for(int j = 0; j < centroids.length; j++){
                 if(Parser.getDistance(metricArray[i], centroids[j].getCoordinates()) < minDistanceToCluster){
                     centroidIndex = j;
-                    minDistanceToCluster = Parser.getDistance(metricArray[i], centroids[0].getCoordinates());
+                    minDistanceToCluster = Parser.getDistance(metricArray[i], centroids[j].getCoordinates());
                 }
             }
             centroids[centroidIndex].businesses.add(new Business(nameArr[i], metricArray[i][0], metricArray[i][1]));
@@ -75,11 +76,13 @@ public class kMeans {
     }
 
     public static float randNum(){
-        return (float) Math.random() * (1000 - 1 + 1) + 1;
+        return (float) Math.random() * (100 - 1 + 1) + 1;
     }
     public static void main(String[] args){
+        Random rnd = new Random();
+        rnd.setSeed(518);
         String outString = "{";
-        for(int i = 0; i < 21; i++){
+        for(int i = 0; i < 10; i++){
     
             outString += "{(float)" + Math.floor(randNum()) + ", (float)" + Math.floor(randNum()) + "},";
             
@@ -87,31 +90,47 @@ public class kMeans {
         System.out.println(outString + "}");
 
 
-        String[] nameArr = {"0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"};
-        float[][] metArr = {{(float)30.0, (float)95.0},{(float)128.0, (float)280.0},{(float)284.0, (float)220.0},{(float)667.0, (float)66.0},{(float)336.0, (float)150.0},{(float)427.0, (float)602.0},{(float)953.0, (float)886.0},{(float)630.0, (float)990.0},{(float)929.0, (float)716.0},{(float)372.0, (float)360.0},{(float)869.0, (float)471.0},{(float)909.0, (float)506.0},{(float)409.0, (float)417.0},{(float)468.0, (float)219.0},{(float)796.0, (float)896.0},{(float)870.0, (float)691.0},{(float)304.0, (float)499.0},{(float)593.0, (float)453.0},{(float)310.0, (float)255.0},{(float)481.0, (float)855.0},{(float)993.0, (float)36.0}};
+        String[] nameArr = {"0","1","2","3","4","5","6","7","8","9"};
+        float[][] metArr = {{(float)74.0, (float)50.0},{(float)99.0, (float)78.0},{(float)96.0, (float)77.0},{(float)30.0, (float)32.0},{(float)13.0, (float)98.0},{(float)48.0, (float)36.0},{(float)46.0, (float)68.0},{(float)38.0, (float)28.0},{(float)78.0, (float)50.0},{(float)8.0, (float)54.0}};
     
         
 
         Centroid[] centroids = assignClusters(metArr, nameArr, 3);
         
-
+        System.out.println("-------------First Iteration-------------");
+        
         for(int i = 0; i < 3; i++){
+            
             System.out.println("---------------------\nCentroid " + i);
+            System.out.println("(" + centroids[i].getCoordinates()[0] + ", " + centroids[i].getCoordinates()[1] + ")");
             for(int j = 0; j < centroids[i].businesses.size(); j++){
-                System.out.println(centroids[i].businesses.get(j).name);
+                System.out.println("(" + metArr[Integer.parseInt(centroids[i].businesses.get(j).name)][0] + "," + metArr[Integer.parseInt(centroids[i].businesses.get(j).name)][1] + ")");
             }
         }
 
-        System.out.println("___________________________________________________");
-
+        System.out.println("-------------Second Iteration-------------");
+        
         Centroid[] reassignedCentroids = reassignClusters(centroids, nameArr, metArr);
+        
         for(int i = 0; i < 3; i++){
             System.out.println("---------------------\nCentroid " + i);
+            System.out.println("(" + reassignedCentroids[i].getCoordinates()[0] + ", " + reassignedCentroids[i].getCoordinates()[1] + ")");
             for(int j = 0; j < reassignedCentroids[i].businesses.size(); j++){
-                System.out.println(reassignedCentroids[i].businesses.get(j).name);
+                System.out.println("(" + metArr[Integer.parseInt(reassignedCentroids[i].businesses.get(j).name)][0] + "," + metArr[Integer.parseInt(reassignedCentroids[i].businesses.get(j).name)][1] + ")");
             }
         }
 
+
+        System.out.println("-------------Third Iteration-------------");
+        Centroid[] reassignedCentroids2 = reassignClusters(reassignedCentroids, nameArr, metArr);
+
+        for(int i = 0; i < 3; i++){
+            System.out.println("---------------------\nCentroid " + i);
+            System.out.println("(" + reassignedCentroids[i].getCoordinates()[0] + ", " + reassignedCentroids[i].getCoordinates()[1] + ")");
+            for(int j = 0; j < reassignedCentroids[i].businesses.size(); j++){
+                System.out.println("(" + metArr[Integer.parseInt(reassignedCentroids[i].businesses.get(j).name)][0] + "," + metArr[Integer.parseInt(reassignedCentroids[i].businesses.get(j).name)][1] + ")");
+            }
+        }
 
     }
 }

@@ -21,7 +21,7 @@ public class Serializer {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 
-        ArrayList<String> restaurantNames = new ArrayList<>();
+        ArrayList<String> restaurantNames = new ArrayList<String>();
 
         System.out.println("Building ExtensibleHashTable to and writing to disk...");
         BufferedReader br = new BufferedReader(new FileReader("data/business_list.txt"));
@@ -69,7 +69,12 @@ public class Serializer {
         FileOutputStream namesFile = new FileOutputStream("data/business_names");
         ObjectOutputStream namesOut = new ObjectOutputStream(namesFile);
 
-        namesOut.writeObject(restaurantNames.toArray());
+        String[] namesArray = new String[restaurantNames.size()];
+        for(int i = 0; i < restaurantNames.size(); i++){
+            namesArray[i] = (String)restaurantNames.get(i);
+        }
+        
+        namesOut.writeObject(namesArray);
 
         namesOut.close();
         fOut.close();

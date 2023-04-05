@@ -16,7 +16,7 @@ public class RestaurantManager {
     String resId = table.get(name);
 
     FileInputStream resFile = new FileInputStream("data/restaurants/" + resId);
-    ObjectInputStream resIn = new ObjectInputStream(file);
+    ObjectInputStream resIn = new ObjectInputStream(resFile);
     Restaurant res = (Restaurant) resIn.readObject();
 
     resFile.close();
@@ -43,8 +43,8 @@ public class RestaurantManager {
   /**
    * Returns a tuple of the form (Distance, TFIDF rating)
    */
-  public static float[] getMetricTuple(Restaurant res, Restaurant res2) throws IOException, ClassNotFoundException {
-    FreqTable freqTable = Locality.getFreqTable();
+  public static float[] getMetricTuple(Restaurant res, Restaurant res2, FreqTable freqTable) throws IOException, ClassNotFoundException {
+    
     float[] coords1 = { res.latitude, res.longitude };
     float[] coords2 = { res2.latitude, res2.longitude };
     float[] result = { Parser.getDistance(coords1, coords2),
