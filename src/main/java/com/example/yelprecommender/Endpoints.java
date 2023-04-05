@@ -48,7 +48,7 @@ public class Endpoints {
 
       @RequestParam(value = "name", defaultValue = "0") String name)
       throws IOException, ClassNotFoundException {
-
+    System.out.println("Fetching recommendation for " + name);
     Restaurant restaurant = RestaurantManager.getRestaurant(name);
     if (restaurant == null)
       return null;
@@ -112,6 +112,6 @@ public class Endpoints {
       out[i] = RestaurantManager.getRestaurant(tempArr[i]);
     }
 
-    return out; // This is temporary so I can compile
+    return out;
   }
 }

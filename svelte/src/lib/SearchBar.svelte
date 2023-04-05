@@ -16,7 +16,6 @@
 	}
 	const keydown: (event?: KeyboardEvent) => void = (event) => {
 		// Initialize fzf
-		console.log(list);
 		if (fzf == undefined && list != undefined) {
 			fzf = new Fzf(list);
 		}
