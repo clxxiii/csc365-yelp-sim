@@ -60,8 +60,7 @@ public class Endpoints {
       if (iName != restaurant.name) {
         Restaurant iRes = RestaurantManager.getRestaurant(name);
         float[] theMetrics = RestaurantManager.getMetricTuple(restaurant, iRes, ft);
-        metrics[0][i] = theMetrics[0];
-        metrics[1][i] = theMetrics[1];
+        metrics[i] = theMetrics;
       }
     }
 
