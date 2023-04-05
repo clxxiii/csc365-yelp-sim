@@ -54,7 +54,7 @@ public class Endpoints {
       return null;
     String[] restaurants = RestaurantManager.getNames();
     FreqTable ft = Locality.getFreqTable();
-    float[][] metrics = new float[2][10002];
+    float[][] metrics = new float[10002][2];
     for (int i = 0; i < restaurants.length; i++) {
       String iName = restaurants[i];
       if (iName != restaurant.name) {
