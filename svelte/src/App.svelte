@@ -41,7 +41,9 @@
 	<LoadingRecommendations visible={loadingVisible} />
 	<div class="recommendations">
 		{#each recommendations as rec}
-			<Recommendation text={rec} />
+			{#if rec != null}
+				<Recommendation text={rec} />
+			{/if}
 		{/each}
 	</div>
 </main>
@@ -58,6 +60,7 @@
 	.recommendations {
 		display: flex;
 		justify-content: center;
+		flex-wrap: wrap;
 		width: 90%;
 		margin: auto;
 		margin-top: 20px;

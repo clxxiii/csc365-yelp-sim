@@ -70,10 +70,10 @@ public class Serializer {
         ObjectOutputStream namesOut = new ObjectOutputStream(namesFile);
 
         String[] namesArray = new String[restaurantNames.size()];
-        for(int i = 0; i < restaurantNames.size(); i++){
-            namesArray[i] = (String)restaurantNames.get(i);
+        for (int i = 0; i < restaurantNames.size(); i++) {
+            namesArray[i] = (String) restaurantNames.get(i);
         }
-        
+
         namesOut.writeObject(namesArray);
 
         namesOut.close();
@@ -85,8 +85,8 @@ public class Serializer {
         ObjectInputStream in = new ObjectInputStream(file);
         ExtensibleHashTable inTable = (ExtensibleHashTable) in.readObject();
 
-        String id = inTable.get("Spirit Bistro");
-        if (id.equalsIgnoreCase("I6S2XzdA0vpodHk5ZoA2yg")) {
+        String id = inTable.get("China Bowl");
+        if (id != null && id.equalsIgnoreCase("13yDsd3lYBR9pQSlcjk1XQ")) {
             System.out.println("Hashtable Success!");
         } else {
             System.out.println("Something has gone horribly wrong with the hash table...");

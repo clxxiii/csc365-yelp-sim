@@ -6,11 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-import org.springframework.util.SystemPropertyUtils;
-
 import main.java.types.ExtensibleHashTable;
 import main.java.types.Restaurant;
-import main.java.functions.Parser;
 
 public class RestaurantManager {
   public static Restaurant getRestaurant(String name) throws IOException, ClassNotFoundException {
@@ -19,7 +16,11 @@ public class RestaurantManager {
     ExtensibleHashTable table = (ExtensibleHashTable) in.readObject();
 
     String resId = table.get(name);
-
+    if (resId == null) {
+      in.close();
+      file.close();
+      return null;
+    }
     FileInputStream resFile = new FileInputStream("data/restaurants/" + resId);
     ObjectInputStream resIn = new ObjectInputStream(resFile);
     Restaurant res = (Restaurant) resIn.readObject();
@@ -39,10 +40,10 @@ public class RestaurantManager {
     String path = "data/business_list.txt";
     BufferedReader reader = new BufferedReader(new FileReader(path));
     String Line = reader.readLine();
- 
-    String[] out = new String [10001];
+
+    String[] out = new String[10001];
     int i = 0;
-    while(Line != null){
+    while (Line != null) {
       out[i] = Parser.getName(Line);
       Line = reader.readLine();
       i++;
@@ -50,13 +51,13 @@ public class RestaurantManager {
     reader.close();
     return out;
   }
-  
 
   /**
    * Returns a tuple of the form (Distance, TFIDF rating)
    */
-  public static float[] getMetricTuple(Restaurant res, Restaurant res2, FreqTable freqTable) throws IOException, ClassNotFoundException {
-    
+  public static float[] getMetricTuple(Restaurant res, Restaurant res2, FreqTable freqTable)
+      throws IOException, ClassNotFoundException {
+
     float[] coords1 = { res.latitude, res.longitude };
     float[] coords2 = { res2.latitude, res2.longitude };
     float[] result = { Parser.getDistance(coords1, coords2),
@@ -65,7 +66,6 @@ public class RestaurantManager {
   }
 
   public static void main(String[] args) throws IOException, ClassNotFoundException {
-
 
   }
 }

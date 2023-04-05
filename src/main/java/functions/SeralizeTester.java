@@ -13,7 +13,7 @@ public class SeralizeTester {
     ObjectInputStream tableIn = new ObjectInputStream(tableFile);
     ExtensibleHashTable table = (ExtensibleHashTable) tableIn.readObject();
 
-    System.out.println(table.get("I M Coffee"));
+    System.out.println(table.get("China Bowl"));
 
     tableIn.close();
     tableFile.close();

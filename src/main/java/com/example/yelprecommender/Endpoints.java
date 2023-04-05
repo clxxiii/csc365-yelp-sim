@@ -59,22 +59,34 @@ public class Endpoints {
     for (int i = 0; i < restaurants.length; i++) {
       String iName = restaurants[i];
       if (iName != restaurant.name) {
-        Restaurant iRes = RestaurantManager.getRestaurant(name);
+        Restaurant iRes = RestaurantManager.getRestaurant(iName);
+        // Fallback
+        if (iRes == null) {
+          String resString = Locality.getLineFromName(iName);
+          iRes = new Restaurant(
+              Parser.getID(resString),
+              Parser.getName(resString),
+              Parser.getCoordinates(resString)[0],
+              Parser.getCoordinates(resString)[1],
+              Parser.getState(resString),
+              Parser.getCategories(resString));
+        }
         metrics[i] = RestaurantManager.getMetricTuple(restaurant, iRes, ft);
       }
     }
 
     Random rnd = new Random();
     rnd.setSeed(12);
-    Centroid[] initialCentroids = kMeans.assignClusters(metrics, restaurants, 50);
-
+    Centroid[] initialCentroids = kMeans.assignClusters(metrics, restaurants, 10);
+    Centroid[] reassignCentroids = kMeans.reassignClusters(initialCentroids, restaurants, metrics);
+    initialCentroids = reassignCentroids;
     for (int i = 0; i < initialCentroids.length; i++)
       initialCentroids[i].getWeight();
 
     float maxWeight = 0;
     Centroid bestCentroid = new Centroid();
     for (int i = 0; i < initialCentroids.length; i++)
-      if (initialCentroids[i].weight > maxWeight) {
+      if (initialCentroids[i].TFIDF > maxWeight) {
         maxWeight = initialCentroids[i].weight;
         bestCentroid = initialCentroids[i];
       }
@@ -107,6 +119,10 @@ public class Endpoints {
       out[i] = RestaurantManager.getRestaurant(res);
     }
 
-    return out;
+    Restaurant[] firstFour = new Restaurant[10];
+    for (int i = 0; i < 10; i++) {
+      firstFour[i] = out[i];
+    }
+    return firstFour;
   }
 }
