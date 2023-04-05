@@ -64,27 +64,20 @@ public class Endpoints {
       }
     }
 
-    // Random rnd = new Random();
-    // rnd.setSeed(12);
-    // Centroid[] initialCentroids = kMeans.assignClusters(metrics, restaurants,
-    // 50);
+    Random rnd = new Random();
+    rnd.setSeed(12);
+    Centroid[] initialCentroids = kMeans.assignClusters(metrics, restaurants, 50);
 
-    // // Centroid[] initialCentroids = kMeans.reassignClusters(centroids1,
-    // restaurants, metrics);
+    for (int i = 0; i < initialCentroids.length; i++)
+      initialCentroids[i].getWeight();
 
-    // for(int i = 0; i < initialCentroids.length; i++)
-    // initialCentroids[i].getWeight();
-
-    // float maxWeight = 0;
-    // Centroid bestCentroid = new Centroid();
-    // for(int i = 0; i < initialCentroids.length; i++)
-    // if(initialCentroids[i].weight > maxWeight){
-    // maxWeight = initialCentroids[i].weight;
-    // bestCentroid = initialCentroids[i];
-    // }
-
-    // TODO: Uncomment the following line to run kMeans
-    // kMeans.generate(restaurants, metrics);
+    float maxWeight = 0;
+    Centroid bestCentroid = new Centroid();
+    for (int i = 0; i < initialCentroids.length; i++)
+      if (initialCentroids[i].weight > maxWeight) {
+        maxWeight = initialCentroids[i].weight;
+        bestCentroid = initialCentroids[i];
+      }
 
     /*
      * Project 1 Similarity Code
@@ -103,10 +96,16 @@ public class Endpoints {
      * return outArr;
      */
 
-    // String[] tempArr = new String[bestCentroid.businesses.size()];
-    // for(int i = 0; i < bestCentroid.businesses.size(); i++){
-    // tempArr[i] = bestCentroid.businesses.get(i).name;
-    // }
+    String[] tempArr = new String[bestCentroid.businesses.size()];
+    for (int i = 0; i < bestCentroid.businesses.size(); i++) {
+      tempArr[i] = bestCentroid.businesses.get(i).name;
+    }
+
+    Restaurant[] out = new Restaurant[tempArr.length];
+    for (int i = 0; i < tempArr.length; i++) {
+      String res = tempArr[i];
+      out[i] = RestaurantManager.getRestaurant(res);
+    }
 
     return out;
   }
