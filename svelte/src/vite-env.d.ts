@@ -1,2 +1,8 @@
-/// <reference types="svelte" />
-/// <reference types="vite/client" />
+type Restaurant = {
+	id: String;
+	name: String;
+	latitude: number;
+	longitude: number;
+	state: String;
+	categories: String[];
+};

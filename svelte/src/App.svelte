@@ -8,9 +8,12 @@
 	let load: LoadingRestaurants;
 	let search: SearchBar;
 	let loadingVisible = false;
-	let recommendations: string[] = [];
+	let recommendations: Restaurant[] = [];
 
-	let restaurantList: string[] | null = ["dev"];
+	let restaurantList: string[][] | null = [
+		[],
+		["haskell", "C plus plus", "go", "nim", "vim", "rust"],
+	];
 	onMount(async () => {
 		load.hide();
 		const restaurantReq = await fetch("http://localhost:8080/get_names");
@@ -26,6 +29,7 @@
 			"http://localhost:8080/recommend?id=" + search.getInput()
 		);
 		recommendations = await recommendationReq.json();
+		console.log(recommendations);
 		loadingVisible = false;
 		search.enable();
 	};
