@@ -1,11 +1,16 @@
 package main.java.functions;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+import org.springframework.util.SystemPropertyUtils;
+
 import main.java.types.ExtensibleHashTable;
 import main.java.types.Restaurant;
+import main.java.functions.Parser;
 
 public class RestaurantManager {
   public static Restaurant getRestaurant(String name) throws IOException, ClassNotFoundException {
@@ -31,14 +36,21 @@ public class RestaurantManager {
    * Returns a list of every business name in the table
    */
   public static String[] getNames() throws IOException, ClassNotFoundException {
-    FileInputStream nameFile = new FileInputStream("data/business_names");
-    ObjectInputStream in = new ObjectInputStream(nameFile);
-    String[] names = (String[]) in.readObject();
-
-    in.close();
-    nameFile.close();
-    return names;
+    String path = "data/business_list.txt";
+    BufferedReader reader = new BufferedReader(new FileReader(path));
+    String Line = reader.readLine();
+ 
+    String[] out = new String [10001];
+    int i = 0;
+    while(Line != null){
+      out[i] = Parser.getName(Line);
+      Line = reader.readLine();
+      i++;
+    }
+    reader.close();
+    return out;
   }
+  
 
   /**
    * Returns a tuple of the form (Distance, TFIDF rating)
@@ -50,5 +62,10 @@ public class RestaurantManager {
     float[] result = { Parser.getDistance(coords1, coords2),
         Locality.TFIDF(Parser.commonElements(res.categories, res2.categories), freqTable) };
     return result;
+  }
+
+  public static void main(String[] args) throws IOException, ClassNotFoundException {
+
+
   }
 }
