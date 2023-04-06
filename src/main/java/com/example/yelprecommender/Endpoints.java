@@ -77,9 +77,10 @@ public class Endpoints {
 
     Random rnd = new Random();
     rnd.setSeed(12);
-    Centroid[] initialCentroids = kMeans.assignClusters(metrics, restaurants, 10);
+    Centroid[] initialCentroids = kMeans.assignClusters(metrics, restaurants, 12);
     Centroid[] reassignCentroids = kMeans.reassignClusters(initialCentroids, restaurants, metrics);
-    initialCentroids = reassignCentroids;
+    initialCentroids = kMeans.reassignClusters(reassignCentroids, restaurants, metrics);
+
     for (int i = 0; i < initialCentroids.length; i++)
       initialCentroids[i].getWeight();
 
