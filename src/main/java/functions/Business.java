@@ -4,6 +4,8 @@ public class Business {
     public String name;
     public float TFIDF;
     public float distance;
+    public float x;
+    public float y;
 
     public float[] getCoordinates(){
         float[] out = {distance, TFIDF};
@@ -23,10 +25,12 @@ public class Business {
         this.TFIDF = 0;
     }
 
-    public Business(String name, float distance, float TFIDF){
+    public Business(String name, float distance, float TFIDF, float x, float y){
         this.name = name;
         this.distance = distance;
         this.TFIDF = TFIDF;
+        this.x = x;
+        this.y = y;
     }
 
 }

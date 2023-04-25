@@ -6,11 +6,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import main.java.functions.Business;
 import main.java.functions.Centroid;
 import main.java.functions.FreqTable;
 import main.java.functions.Locality;
 import main.java.functions.Parser;
+import main.java.functions.RestaurantListBuilder;
 import main.java.functions.RestaurantManager;
+import main.java.functions.SeralizeTester;
+import main.java.types.ExtensibleHashTable;
 import main.java.types.Restaurant;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,7 +52,7 @@ public class Endpoints {
   public Restaurant[] recommendBusinees(
       @RequestParam(value = "name", defaultValue = "0") String name)
       throws IOException, ClassNotFoundException {
-
+    ExtensibleHashTable HT = SeralizeTester.readTable();
     System.out.println("Fetching recommendation for " + name);
     Restaurant restaurant = RestaurantManager.getRestaurant(name);
     if (restaurant == null)
@@ -77,9 +81,9 @@ public class Endpoints {
 
     Random rnd = new Random();
     rnd.setSeed(12);
-    Centroid[] initialCentroids = kMeans.assignClusters(metrics, restaurants, 12);
-    Centroid[] reassignCentroids = kMeans.reassignClusters(initialCentroids, restaurants, metrics);
-    initialCentroids = kMeans.reassignClusters(reassignCentroids, restaurants, metrics);
+    Centroid[] initialCentroids = kMeans.assignClusters(metrics, restaurants, 12, HT);
+    Centroid[] reassignCentroids = kMeans.reassignClusters(initialCentroids, restaurants, metrics, HT);
+    initialCentroids = kMeans.reassignClusters(reassignCentroids, restaurants, metrics, HT);
 
     for (int i = 0; i < initialCentroids.length; i++)
       initialCentroids[i].getWeight();
@@ -109,21 +113,13 @@ public class Endpoints {
      * return outArr;
      */
 
-    String[] tempArr = new String[bestCentroid.businesses.size()];
-    for (int i = 0; i < bestCentroid.businesses.size(); i++) {
-      tempArr[i] = bestCentroid.businesses.get(i).name;
+
+    Business[] busiCrawl =bestCentroid.fourNearestBusinesses();
+    Restaurant[] restCrawl = new Restaurant[4];
+    for(int i = 0; i < busiCrawl.length; i++){
+      restCrawl[i] = RestaurantManager.getRestaurant(busiCrawl[i].name);
     }
 
-    Restaurant[] out = new Restaurant[tempArr.length];
-    for (int i = 0; i < tempArr.length; i++) {
-      String res = tempArr[i];
-      out[i] = RestaurantManager.getRestaurant(res);
-    }
-
-    Restaurant[] firstFour = new Restaurant[10];
-    for (int i = 0; i < 10; i++) {
-      firstFour[i] = out[i];
-    }
-    return firstFour;
+    return bestCentroid;
   }
 }

@@ -8,15 +8,16 @@ import main.java.types.ExtensibleHashTable;
 
 public class SeralizeTester {
 
-  public static void readTable() throws IOException, ClassNotFoundException {
+  public static ExtensibleHashTable readTable() throws IOException, ClassNotFoundException {
     FileInputStream tableFile = new FileInputStream("data/hashtable");
     ObjectInputStream tableIn = new ObjectInputStream(tableFile);
     ExtensibleHashTable table = (ExtensibleHashTable) tableIn.readObject();
 
-    System.out.println(table.get("China Bowl"));
-
+    
+    
     tableIn.close();
     tableFile.close();
+    return table;
   }
 
   public static void main(String[] args) throws IOException, ClassNotFoundException {

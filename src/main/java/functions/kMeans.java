@@ -1,13 +1,20 @@
 package main.java.functions;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
 import org.springframework.expression.spel.ast.Assign;
 import main.java.functions.Parser;
+import main.java.types.ExtensibleHashTable;
 
 public class kMeans {
-    public static Centroid[] assignClusters(float[][] metricArray, String[] nameArr, int k){
+    public static Centroid[] assignClusters(float[][] metricArray, String[] nameArr, int k, ExtensibleHashTable HT ) throws ClassNotFoundException, IOException, FileNotFoundException {
 
         Centroid[] centroids = new Centroid[k];
         for(int i = 0; i < centroids.length;i++){
@@ -49,13 +56,18 @@ public class kMeans {
                     minDistanceToCluster = Parser.getDistance(metricArray[i], centroids[j].getCoordinates());
                 }
             }
-            centroids[centroidIndex].businesses.add(new Business(nameArr[i], metricArray[i][0], metricArray[i][1]));
+            BufferedReader temp = new BufferedReader(new FileReader(HT.get(nameArr[i])));
+            String Line = temp.readLine();
+            float x = Parser.getCoordinates(Line)[0];
+            float y = Parser.getCoordinates(Line)[1];
+            
+            centroids[centroidIndex].businesses.add(new Business(nameArr[i], metricArray[i][0], metricArray[i][1], x, y));
         }
         
         return centroids;
     }
 
-    public static Centroid[] reassignClusters(Centroid[] centroids, String[] nameArr, float[][] metricArray){
+    public static Centroid[] reassignClusters(Centroid[] centroids, String[] nameArr, float[][] metricArray, ExtensibleHashTable HT ) throws FileNotFoundException, ClassNotFoundException, IOException{
         for(int i = 0; i < centroids.length; i++){
             centroids[i].centerCentroids();
         }
@@ -69,7 +81,11 @@ public class kMeans {
                     minDistanceToCluster = Parser.getDistance(metricArray[i], centroids[j].getCoordinates());
                 }
             }
-            centroids[centroidIndex].businesses.add(new Business(nameArr[i], metricArray[i][0], metricArray[i][1]));
+            BufferedReader temp = new BufferedReader(new FileReader(HT.get(nameArr[i])));
+            String Line = temp.readLine();
+            float x = Parser.getCoordinates(Line)[0];
+            float y = Parser.getCoordinates(Line)[1];
+            centroids[centroidIndex].businesses.add(new Business(nameArr[i], metricArray[i][0], metricArray[i][1],x,y));
         }
         
         return centroids;
@@ -78,7 +94,9 @@ public class kMeans {
     public static float randNum(){
         return (float) Math.random() * (100 - 1 + 1) + 1;
     }
-    public static void main(String[] args){
+
+    
+    public static void main(String[] args) throws ClassNotFoundException, IOException, FileNotFoundException{
         Random rnd = new Random();
         rnd.setSeed(518);
         String outString = "{";
@@ -94,8 +112,8 @@ public class kMeans {
         float[][] metArr = {{(float)74.0, (float)50.0},{(float)99.0, (float)78.0},{(float)96.0, (float)77.0},{(float)30.0, (float)32.0},{(float)13.0, (float)98.0},{(float)48.0, (float)36.0},{(float)46.0, (float)68.0},{(float)38.0, (float)28.0},{(float)78.0, (float)50.0},{(float)8.0, (float)54.0}};
     
         
-
-        Centroid[] centroids = assignClusters(metArr, nameArr, 3);
+        ExtensibleHashTable HT = SeralizeTester.readTable();
+        Centroid[] centroids = assignClusters(metArr, nameArr, 3, HT);
         
         System.out.println("-------------First Iteration-------------");
         
@@ -104,13 +122,14 @@ public class kMeans {
             System.out.println("---------------------\nCentroid " + i);
             System.out.println("(" + centroids[i].getCoordinates()[0] + ", " + centroids[i].getCoordinates()[1] + ")");
             for(int j = 0; j < centroids[i].businesses.size(); j++){
+                System.out.println(centroids[i].businesses.get(i).x + centroids[i].businesses.get(i).y);
                 System.out.println("(" + metArr[Integer.parseInt(centroids[i].businesses.get(j).name)][0] + "," + metArr[Integer.parseInt(centroids[i].businesses.get(j).name)][1] + ")");
             }
         }
 
         System.out.println("-------------Second Iteration-------------");
         
-        Centroid[] reassignedCentroids = reassignClusters(centroids, nameArr, metArr);
+        Centroid[] reassignedCentroids = reassignClusters(centroids, nameArr, metArr, HT);
         
         for(int i = 0; i < 3; i++){
             System.out.println("---------------------\nCentroid " + i);
@@ -122,7 +141,7 @@ public class kMeans {
 
 
         System.out.println("-------------Third Iteration-------------");
-        Centroid[] reassignedCentroids2 = reassignClusters(reassignedCentroids, nameArr, metArr);
+        Centroid[] reassignedCentroids2 = reassignClusters(reassignedCentroids, nameArr, metArr, HT);
 
         for(int i = 0; i < 3; i++){
             System.out.println("---------------------\nCentroid " + i);
