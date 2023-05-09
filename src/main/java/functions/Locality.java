@@ -7,7 +7,7 @@ import java.io.IOException;
 import main.java.types.Restaurant;
 
 public class Locality {
-
+  
   public static String getLineFromName(String name) throws IOException {
     BufferedReader reader = new BufferedReader(new FileReader("data/business_list.txt"));
     String Line = reader.readLine();

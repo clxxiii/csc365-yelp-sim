@@ -26,7 +26,7 @@ public class Serializer {
         System.out.println("Building ExtensibleHashTable to and writing to disk...");
         BufferedReader br = new BufferedReader(new FileReader("data/business_list.txt"));
         String line = br.readLine();
-
+        System.out.println("Test1");
         ExtensibleHashTable table = new ExtensibleHashTable("data/buckets");
 
         while (line != null) {
@@ -45,7 +45,7 @@ public class Serializer {
                     coords[1],
                     Parser.getState(line),
                     categories);
-
+            res.setStreets();
             FileOutputStream file = new FileOutputStream("data/restaurants/" +
                     res.business_id.trim());
             ObjectOutputStream out = new ObjectOutputStream(file);
@@ -57,7 +57,7 @@ public class Serializer {
             line = br.readLine();
         }
         br.close();
-
+        System.out.println("Test2");
         FileOutputStream fOut = new FileOutputStream("data/hashtable");
         ObjectOutputStream out = new ObjectOutputStream(fOut);
 

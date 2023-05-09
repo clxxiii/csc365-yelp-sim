@@ -14,8 +14,9 @@ public class RestaurantManager {
     FileInputStream file = new FileInputStream("data/hashtable");
     ObjectInputStream in = new ObjectInputStream(file);
     ExtensibleHashTable table = (ExtensibleHashTable) in.readObject();
-
+   
     String resId = table.get(name);
+    
     if (resId == null) {
       in.close();
       file.close();
@@ -23,8 +24,9 @@ public class RestaurantManager {
     }
     FileInputStream resFile = new FileInputStream("data/restaurants/" + resId);
     ObjectInputStream resIn = new ObjectInputStream(resFile);
+    
     Restaurant res = (Restaurant) resIn.readObject();
-
+    
     resFile.close();
     resIn.close();
     file.close();

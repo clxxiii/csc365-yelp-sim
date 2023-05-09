@@ -1,6 +1,13 @@
 package main.java.functions;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOError;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import main.java.types.Restaurant;
 
 public class Parser {
 
@@ -77,6 +84,7 @@ public class Parser {
     return output;
   }
 
+
   public static float getDistance(float[] c1, float[] c2) {
     if (c1.length != 2 || c2.length != 2) {
       return -1;
@@ -90,6 +98,40 @@ public class Parser {
     return (float) Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
     
   }
+
+  public static Restaurant[] getFourClosest(Restaurant input) throws FileNotFoundException, IOException, ClassNotFoundException{
+    Restaurant[] output = new Restaurant[4];
+    float[] distances = {100000, 100000, 100000, 100000};
+    float[] inCoords = {input.latitude, input.longitude};
+    BufferedReader br = new BufferedReader(new FileReader("data/business_list.txt"));
+    String line = br.readLine();
+
+    while(line != null){
+      if(getName(line) != input.name){
+        Restaurant cur = new Restaurant(Parser.getID(line), Parser.getName(line), Parser.getCoordinates(line)[0], Parser.getCoordinates(line)[1], Parser.getState(line), Parser.getCategories(line));
+        float[] curCoords = {cur.latitude, cur.longitude};
+        float curDist = getDistance(curCoords, inCoords);
+        
+        int largestListDistIndex = -1; 
+        float largestDistVal = -1;
+        for(int i = 0; i < distances.length; i++){
+          if(distances[i] > largestDistVal){
+            largestListDistIndex = i;
+            largestDistVal = distances[i];
+          }
+        }
+        if(largestDistVal > curDist){
+          distances[largestListDistIndex] = curDist;
+          output[largestListDistIndex] = cur;
+        }
+      }
+      line = br.readLine();
+    }
+    br.close();
+    return output;
+    
+  }
+
 
   public static String[] getCategories(String input) {
     String outString = "";

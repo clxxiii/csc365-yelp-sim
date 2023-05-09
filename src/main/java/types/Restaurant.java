@@ -1,25 +1,41 @@
 package main.java.types;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+
+import main.java.functions.Parser;
+
 public class Restaurant implements java.io.Serializable {
 
   public String business_id;
   public String name;
-
   public String state;
   public float latitude;
   public float longitude;
-
+  public Street[] streets;
   public String[] categories;
 
   public Restaurant(String id, String name, float latitude,
       float longitude, String state,
-      String[] categories) {
+      String[] categories)  {
     business_id = id;
     this.name = name;
     this.latitude = latitude;
     this.longitude = longitude;
     this.state = state;
     this.categories = categories;
+  }
+
+  public void setStreets() throws FileNotFoundException, ClassNotFoundException, IOException {
+    Restaurant[] closestRest = Parser.getFourClosest(this);
+    Street[] streets = new Street[4];
+    for(int i = 0; i < closestRest.length; i++){
+      Restaurant[] temp = {this, closestRest[i]};
+      Street street = new Street(temp, Parser.commonElements(this.categories, closestRest[i].categories).length);
+      streets[i] = street;
+    }
+    this.streets = streets;
   }
 
   public float getDistance(float[] coordinates) {

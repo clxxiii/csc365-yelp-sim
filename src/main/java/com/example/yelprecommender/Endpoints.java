@@ -51,11 +51,13 @@ public class Endpoints {
 
     System.out.println("Fetching recommendation for " + name);
     Restaurant restaurant = RestaurantManager.getRestaurant(name);
+    System.out.println("Made it!");
     if (restaurant == null)
       return null;
     String[] restaurants = RestaurantManager.getNames();
     FreqTable ft = Locality.getFreqTable();
     float[][] metrics = new float[10002][2];
+    System.out.println("Here!");
     for (int i = 0; i < restaurants.length; i++) {
       String iName = restaurants[i];
       if (iName != restaurant.name) {
@@ -120,10 +122,6 @@ public class Endpoints {
       out[i] = RestaurantManager.getRestaurant(res);
     }
 
-    Restaurant[] firstFour = new Restaurant[10];
-    for (int i = 0; i < 10; i++) {
-      firstFour[i] = out[i];
-    }
-    return firstFour;
+    return out;
   }
 }
