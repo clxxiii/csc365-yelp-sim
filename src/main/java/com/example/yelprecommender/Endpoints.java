@@ -59,21 +59,31 @@ public class Endpoints {
     float[][] metrics = new float[10002][2];
     System.out.println("Here!");
     for (int i = 0; i < restaurants.length; i++) {
+      try{
       String iName = restaurants[i];
       if (iName != restaurant.name) {
         Restaurant iRes = RestaurantManager.getRestaurant(iName);
         // Fallback
         if (iRes == null) {
+  
           String resString = Locality.getLineFromName(iName);
-          iRes = new Restaurant(
-              Parser.getID(resString),
-              Parser.getName(resString),
-              Parser.getCoordinates(resString)[0],
-              Parser.getCoordinates(resString)[1],
-              Parser.getState(resString),
-              Parser.getCategories(resString));
+          if(resString == null){
+            continue;
+          }
+          System.out.println(Parser.getName(resString));
+            iRes = new Restaurant(
+                Parser.getID(resString),
+                Parser.getName(resString),
+                Parser.getCoordinates(resString)[0],
+                Parser.getCoordinates(resString)[1],
+                Parser.getState(resString),
+                Parser.getCategories(resString));
+          
         }
         metrics[i] = RestaurantManager.getMetricTuple(restaurant, iRes, ft);
+      }}
+      catch (Exception e){
+        continue;
       }
     }
 

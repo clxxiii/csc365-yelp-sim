@@ -135,6 +135,9 @@ public class ExtensibleHashTable implements java.io.Serializable {
   }
 
   public String get(String e) throws IOException, ClassNotFoundException {
+    if(e == null){
+      return null;
+    }
     int hash = e.hashCode();
     int pIndex = hash & (size - 1);
     int bIndex = pBuckets[pIndex];

@@ -28,8 +28,9 @@ public class Serializer {
         String line = br.readLine();
         System.out.println("Test1");
         ExtensibleHashTable table = new ExtensibleHashTable("data/buckets");
-
+        int count = 0;
         while (line != null) {
+            count += 1;
             if (line.equals("")) {
                 line = br.readLine();
                 continue;
@@ -38,6 +39,7 @@ public class Serializer {
             float[] coords = Parser.getCoordinates(line);
             String[] categories = Parser.getCategories(line);
             restaurantNames.add(Parser.getName(line));
+            System.out.println(Parser.getName(line) + ' ' + count);
             Restaurant res = new Restaurant(
                     Parser.getID(line),
                     Parser.getName(line),
@@ -85,8 +87,8 @@ public class Serializer {
         ObjectInputStream in = new ObjectInputStream(file);
         ExtensibleHashTable inTable = (ExtensibleHashTable) in.readObject();
 
-        String id = inTable.get("China Bowl");
-        if (id != null && id.equalsIgnoreCase("13yDsd3lYBR9pQSlcjk1XQ")) {
+        String id = inTable.get("Pomme Cafe & Wine Bar");
+        if (id != null && id.equalsIgnoreCase("cljHYek6vHtqUgUsnJBqmA")) {
             System.out.println("Hashtable Success!");
         } else {
             System.out.println("Something has gone horribly wrong with the hash table...");

@@ -28,5 +28,4 @@ public class Business {
         this.distance = distance;
         this.TFIDF = TFIDF;
     }
-
 }

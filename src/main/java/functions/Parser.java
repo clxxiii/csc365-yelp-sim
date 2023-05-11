@@ -79,7 +79,7 @@ public class Parser {
         i = i + input.length();
       }
     }
-
+    
     float[] output = { Float.parseFloat(out1), Float.parseFloat(out2) };
     return output;
   }
@@ -107,7 +107,7 @@ public class Parser {
     String line = br.readLine();
 
     while(line != null){
-      if(getName(line) != input.name){
+      if(!getName(line).equals(input.name)){
         Restaurant cur = new Restaurant(Parser.getID(line), Parser.getName(line), Parser.getCoordinates(line)[0], Parser.getCoordinates(line)[1], Parser.getState(line), Parser.getCategories(line));
         float[] curCoords = {cur.latitude, cur.longitude};
         float curDist = getDistance(curCoords, inCoords);
@@ -184,5 +184,17 @@ public class Parser {
       output[i] = temp.get(i);
     }
     return output;
+  }
+
+  public static void main(String[] args) throws FileNotFoundException, ClassNotFoundException, IOException {
+    BufferedReader br = new BufferedReader(new FileReader("data/business_list.txt"));
+    String line = br.readLine();
+    Restaurant res = RestaurantManager.getRestaurant(Parser.getName(line));
+    float[] resCoords = {res.latitude, res.longitude};
+    Restaurant[] temp = getFourClosest(res);
+    for(Restaurant R : temp){
+      float[] rCoords = {R.latitude, R.longitude};
+      System.out.println(R.name + " - " + getDistance(resCoords, rCoords));
+    }
   }
 }
