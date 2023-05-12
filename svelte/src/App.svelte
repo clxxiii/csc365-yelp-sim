@@ -59,10 +59,12 @@
 	}
 	.recommendations {
 		display: flex;
+    flex-direction: column;
 		justify-content: center;
-		flex-wrap: wrap;
+    align-items: center;
 		width: 90%;
 		margin: auto;
+		flex-wrap: wrap;
 		margin-top: 20px;
 	}
 </style>
