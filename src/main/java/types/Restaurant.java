@@ -15,7 +15,7 @@ public class Restaurant implements java.io.Serializable {
   public float longitude;
   public Street[] streets;
   public String[] categories;
-
+  public boolean visited;
   public Restaurant(String id, String name, float latitude,
       float longitude, String state,
       String[] categories)  {
@@ -25,6 +25,7 @@ public class Restaurant implements java.io.Serializable {
     this.longitude = longitude;
     this.state = state;
     this.categories = categories;
+    this.visited = false;
   }
 
   public void setStreets() throws FileNotFoundException, ClassNotFoundException, IOException {

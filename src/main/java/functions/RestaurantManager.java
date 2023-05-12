@@ -16,12 +16,30 @@ public class RestaurantManager {
     ExtensibleHashTable table = (ExtensibleHashTable) in.readObject();
    
     String resId = table.get(name);
-    
+            // Fallback
+    in.close();
     if (resId == null) {
-      in.close();
-      file.close();
       return null;
+    //   System.out.println();
+    //     String resString = Locality.getLineFromName(name);
+    //     if(resString == null){
+    //       return null;
+    //     }
+
+    
+    // Restaurant temp = new Restaurant(
+    //                Parser.getID(resString),
+    //                 Parser.getName(resString),
+    //                 Parser.getCoordinates(resString)[0],
+    //                 Parser.getCoordinates(resString)[1],
+    //                 Parser.getState(resString),
+    //                 Parser.getCategories(resString));
+              
+
+    // return temp;
     }
+    
+
     FileInputStream resFile = new FileInputStream("data/restaurants/" + resId);
     ObjectInputStream resIn = new ObjectInputStream(resFile);
     
@@ -43,7 +61,7 @@ public class RestaurantManager {
     BufferedReader reader = new BufferedReader(new FileReader(path));
     String Line = reader.readLine();
 
-    String[] out = new String[10001];
+    String[] out = new String[10000];
     int i = 0;
     while (Line != null) {
       out[i] = Parser.getName(Line);
